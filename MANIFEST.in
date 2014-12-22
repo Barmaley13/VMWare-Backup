@@ -1,4 +1,0 @@
-include README.rst LICENSE run_backup.py
-global-exclude .idea
-recursive-include docs *
-global-exclude .idea
