@@ -95,8 +95,8 @@ how to format crontab string to set proper backup intervals.
 
 Also, it is possible to change time stamp format. Please refer to
 https://docs.python.org/2/library/time.html#time.strftime. That will explain how to format such a string. I would
-recommend not to mess with it to much since there is no validation performed on those strings. But this might be handy
-for friends from Europe and other parts of the world if you want to change month and date inside of the time stamp.
+recommend not to mess with it too much since there is no validation performed on those strings. But this might be handy
+for friends from Europe and other parts of the world if you want to change month and date order.
 
 Notes for Code Developers
 =========================
