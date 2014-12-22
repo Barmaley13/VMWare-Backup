@@ -104,6 +104,7 @@ def _generate_docs(doc_packages):
 
     # Moving images to appropriate folder
     images = glob.glob('*.png')
+    fs.make_dir('_docs/images/')
     for image in images:
         shutil.move(image, '_docs/images/' + image.split('/')[-1])
     # Updating automatically generated rst files
