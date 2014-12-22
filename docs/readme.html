@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>VMWare-Backup &mdash; VMWare Backup 1.01.02 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.01.02',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="VMWare Backup 1.01.02 documentation" href="index.html" />
+    <link rel="next" title="vmware_backup" href="modules.html" />
+    <link rel="prev" title="Welcome to VMWare Backup’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="vmware_backup"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to VMWare Backup’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">VMWare Backup 1.01.02 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="vmware-backup">
+<h1>VMWare-Backup<a class="headerlink" href="#vmware-backup" title="Permalink to this headline">¶</a></h1>
+<p>Python based VMWare backup script.</p>
+<div class="section" id="introduction-and-some-general-assumptions">
+<h2>Introduction and some general assumptions<a class="headerlink" href="#introduction-and-some-general-assumptions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-this-script-does">
+<h3>What this Script Does<a class="headerlink" href="#what-this-script-does" title="Permalink to this headline">¶</a></h3>
+<p>Basically, using this script it is possible to set certain time to perform backups. All, it needs to know location of
+your <tt class="docutils literal"><span class="pre">VMWare</span></tt> machines, location of backup media and location of <tt class="docutils literal"><span class="pre">vmrun</span></tt> interface.</p>
+<p>Once, backup script is executed it goes through the folder with your virtual machines. Matches those to currently
+running machines using <tt class="docutils literal"><span class="pre">vmrun</span></tt>. Goes through the list of the machines, suspending, backing up and resuming those
+individually. If machine is powered off, script backs it up without performing suspend and resume steps.</p>
+<p>Script keeps on logging what have been done, creating log file with a time stamp at the end.</p>
+<p>Also each backup is stored under time stamped folder. During backup, script goes through all the backup volumes and
+determines which volume to use to backup particular machine. Therefore, it is possible you might end up with
+same date backup spread out on different backup volumes to conserve space.</p>
+<p>One more feature that is worth mentioning. During backup setup stage, script saves your backup settings
+to a file so those settings are saved to the hard drive. (or a solid state drive, I don&#8217;t know what you might have...)</p>
+</div>
+<div class="section" id="operating-system-considerations">
+<h3>Operating System Considerations<a class="headerlink" href="#operating-system-considerations" title="Permalink to this headline">¶</a></h3>
+<p>Was written and tested on Linux-based <tt class="docutils literal"><span class="pre">Red</span> <span class="pre">Hat</span> <span class="pre">6</span></tt> Operating System.
+It should work on <tt class="docutils literal"><span class="pre">Windows</span></tt> and <tt class="docutils literal"><span class="pre">Mac</span> <span class="pre">OS</span></tt>. However, I am pretty sure it will need some slight code additions
+for the <tt class="docutils literal"><span class="pre">Windows</span></tt>. I am not familiar enough with <tt class="docutils literal"><span class="pre">Mac</span> <span class="pre">OS</span></tt> to tell if it will work right of the bet or not.</p>
+</div>
+<div class="section" id="vmware-product-support">
+<h3>VMWare Product Support<a class="headerlink" href="#vmware-product-support" title="Permalink to this headline">¶</a></h3>
+<p>Currently, we are using <tt class="docutils literal"><span class="pre">VMWare</span> <span class="pre">Workstation</span></tt> to run our virtual machines. If you are using any other <tt class="docutils literal"><span class="pre">VMWare</span></tt>
+product this backup script might require <tt class="docutils literal"><span class="pre">vmrun</span></tt> modification. Which is command prompt utility that we&#8217;ve used to
+talk to <tt class="docutils literal"><span class="pre">VMWare</span> <span class="pre">Workstation</span></tt>. My knoweledge of VMWare products is quite limited so suggestions, additions,
+modifications are welcome!</p>
+</div>
+<div class="section" id="backup-media">
+<h3>Backup Media<a class="headerlink" href="#backup-media" title="Permalink to this headline">¶</a></h3>
+<p>Furthermore, we&#8217;ve been using this script to back up virtual machines to tape. Our tape drive consist of 8 tapes, which
+shows up in Linux as a drive with 8 volumes. It is possible to modify script to work with single tape or any other
+backup configurations.</p>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Make sure latest python-crontab package is installed:</p>
+<div class="highlight-python"><div class="highlight"><pre>pip install python-crontab
+</pre></div>
+</div>
+<p>Install vmware-backup package. Either download latest code from Github and execute:</p>
+<div class="highlight-python"><div class="highlight"><pre>python setup.py install
+</pre></div>
+</div>
+<p>Alternatively, install package using pip:</p>
+<div class="highlight-python"><div class="highlight"><pre>pip install vmware-backup
+</pre></div>
+</div>
+<p>During installation, vmware backup module will be added to your python site-packages. Also, installation script will
+copy <tt class="docutils literal"><span class="pre">run_backup.py</span></tt> script along with docs to you current user directory. Under linux that would be <tt class="docutils literal"><span class="pre">~</span></tt>, under
+Windows should be <tt class="docutils literal"><span class="pre">C:/Users/Your_Name/</span></tt>, under Mac OS who knows...</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Let us know if you stumble upon missing python modules that we forgot to include.</p>
+</div>
+</div>
+<div class="section" id="how-to-use-this-script-to-backup-your-vmware-virtual-machines">
+<h2>How to use this script to backup your VMWare Virtual Machines<a class="headerlink" href="#how-to-use-this-script-to-backup-your-vmware-virtual-machines" title="Permalink to this headline">¶</a></h2>
+<p>Once again, current limitations are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>This script has been tested on Linux-based <tt class="docutils literal"><span class="pre">Red</span> <span class="pre">Hat</span> <span class="pre">6</span></tt> only!</li>
+<li>Has been tested only with <tt class="docutils literal"><span class="pre">VMWare</span> <span class="pre">Workstation</span></tt>!</li>
+<li>Script assumes that you have a multi-volume backup drive. In my case, I point script to the <tt class="docutils literal"><span class="pre">/media/lto6</span></tt>,
+which is a drive. And I have multiple volumes (displayed as folders) under that location.</li>
+</ul>
+</div></blockquote>
+<p>First and foremost, find where installation procedure placed <tt class="docutils literal"><span class="pre">run_backup.py</span></tt> file. Once, the file is located, you
+can execute following to fetch all the possible options:</p>
+<div class="highlight-python"><div class="highlight"><pre>python run_backup -h
+</pre></div>
+</div>
+<p>The options should be self explanatory. Set backup settings first, such crone schedule, vmrun path, virtual machines
+path and tape path. Next - enable backup.</p>
+<p>Please refer to <a class="reference external" href="https://pypi.python.org/pypi/python-crontab">https://pypi.python.org/pypi/python-crontab</a> that will explain
+how to format crontab string to set proper backup intervals.</p>
+<p>Also, it is possible to change time stamp format. Please refer to
+<a class="reference external" href="https://docs.python.org/2/library/time.html#time.strftime">https://docs.python.org/2/library/time.html#time.strftime</a>. That will explain how to format such a string. I would
+recommend not to mess with it to much since there is no validation performed on those strings. But this might be handy
+for friends from Europe and other parts of the world if you want to change month and date inside of the time stamp.</p>
+</div>
+<div class="section" id="notes-for-code-developers">
+<h2>Notes for Code Developers<a class="headerlink" href="#notes-for-code-developers" title="Permalink to this headline">¶</a></h2>
+<p>The vmware_backup module comes with some documentation. It is mostly self generated from the code itself.
+There are also images giving basic overview as far as package modules and classes. Please let me know, if you end up
+digging through code and willing to extend documentation.</p>
+</div>
+<div class="section" id="additional-info-and-questions">
+<h2>Additional Info and Questions<a class="headerlink" href="#additional-info-and-questions" title="Permalink to this headline">¶</a></h2>
+<p>Shoot me email at <tt class="docutils literal"><span class="pre">kirill</span> <span class="pre">at</span> <span class="pre">kbelyayev.com</span></tt> if you have any questions, suggestions, improvements, additions and etc.
+I would love to help you get this script going on your system if you hire me as a contractor. I might help you free of
+charge if you contribute to this distribution or ask politely. Beer donations are welcome too!</p>
+<p><strong>Good luck! Happy coding! And happy vmware backups!</strong></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">VMWare-Backup</a><ul>
+<li><a class="reference internal" href="#introduction-and-some-general-assumptions">Introduction and some general assumptions</a><ul>
+<li><a class="reference internal" href="#what-this-script-does">What this Script Does</a></li>
+<li><a class="reference internal" href="#operating-system-considerations">Operating System Considerations</a></li>
+<li><a class="reference internal" href="#vmware-product-support">VMWare Product Support</a></li>
+<li><a class="reference internal" href="#backup-media">Backup Media</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#how-to-use-this-script-to-backup-your-vmware-virtual-machines">How to use this script to backup your VMWare Virtual Machines</a></li>
+<li><a class="reference internal" href="#notes-for-code-developers">Notes for Code Developers</a></li>
+<li><a class="reference internal" href="#additional-info-and-questions">Additional Info and Questions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to VMWare Backup&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="next chapter">vmware_backup</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/readme.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="vmware_backup"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to VMWare Backup’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">VMWare Backup 1.01.02 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Kirill V. Belyayev.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
