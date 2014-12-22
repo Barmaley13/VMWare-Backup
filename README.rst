@@ -105,6 +105,9 @@ The vmware_backup module comes with some documentation. It is mostly self genera
 There are also images giving basic overview as far as package modules and classes. Please let me know, if you end up
 digging through code and willing to extend documentation.
 
+Following link, parses html pages directly from GitHub. Pretty neat stuff!
+http://rawgit.com/Barmaley13/VMWare-Backup/master/docs/index.html
+
 Additional Info and Questions
 =============================
 
