@@ -68,12 +68,15 @@ copy ``run_backup.py`` script along with docs to you current user directory. Und
 Windows should be ``C:/Users/Your_Name/``, under Mac OS who knows...
 
 
-.. note:: Let us know if you stumble upon missing python modules that we forgot to include.
+.. note::
+
+    Let us know if you stumble upon missing python modules that we forgot to include.
 
 How to use this script to backup your VMWare Virtual Machines
 =============================================================
 
 Once again, current limitations are:
+
     * This script has been tested on Linux-based ``Red Hat 6`` only!
     * Has been tested only with ``VMWare Workstation``!
     * Script assumes that you have a multi-volume backup drive. In my case, I point script to the ``/media/lto6``,
