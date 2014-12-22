@@ -1,4 +1,4 @@
-include README.md run_backup.py
+include README.md LICENSE run_backup.py
 global-exclude .idea
 recursive-include docs *
 global-exclude .idea

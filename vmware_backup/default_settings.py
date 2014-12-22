@@ -17,7 +17,7 @@ from .ordered_dict import OrderedDict
 DEFAULT_SETTINGS = OrderedDict()
 DEFAULT_SETTINGS['crone_schedule'] = '0 22 * * 1-5'
 DEFAULT_SETTINGS['vmrun_path'] = 'vmrun'
-DEFAULT_SETTINGS['vms_path'] = '/home/cimasys/vmware-test'
+DEFAULT_SETTINGS['vms_path'] = '~/vmware'
 DEFAULT_SETTINGS['tape_path'] = '/media/lto6'
 DEFAULT_SETTINGS['_backup_ts'] = ''
 
