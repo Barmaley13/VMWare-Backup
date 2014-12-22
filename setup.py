@@ -178,7 +178,7 @@ setup(
     author='Kirill V. Belyayev',
     author_email='kbelyayev@gmail.com',
     url='https://github.com/Barmaley13/VMWare-Backup',
-    download_url='https://github.com/Barmaley13/VMWare-Backup/tarball/' + __version__,
+    # download_url='https://github.com/Barmaley13/VMWare-Backup/tarball/' + __version__,
     packages=packages.keys(),
     package_dir=packages,
     package_data=package_data,
