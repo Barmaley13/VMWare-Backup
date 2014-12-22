@@ -67,6 +67,7 @@ During installation, vmware backup module will be added to your python site-pack
 copy ``run_backup.py`` script along with docs to you current user directory. Under linux that would be ``~``, under
 Windows should be ``C:/Users/Your_Name/``, under Mac OS who knows...
 
+
 .. note:: Let us know if you stumble upon missing python modules that we forgot to include.
 
 How to use this script to backup your VMWare Virtual Machines
