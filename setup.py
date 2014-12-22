@@ -172,13 +172,13 @@ package_data = {'': package_data_content}
 
 setup(
     name='vmware_backup',
-    packages=['vmware_backup'],
     version=__version__,
     description='VMWare Backup',
     long_description='Python based vmware backup script',
     author='Kirill V. Belyayev',
     author_email='kbelyayev@gmail.com',
     url='https://github.com/Barmaley13/VMWare-Backup',
+    download_url='https://github.com/Barmaley13/VMWare-Backup/tarball/' + __version__,
     packages=packages.keys(),
     package_dir=packages,
     package_data=package_data,

@@ -6,8 +6,8 @@ Python based VMWare backup script.
 Introduction and some general assumptions
 =========================================
 
-What this script does in the nutshell
-_____________________________________
+What this Script Does
+_____________________
 
 Basically, using this script it is possible to set certain time to perform backups. All, it needs to know location of
 your ``VMWare`` machines, location of backup media and location of ``vmrun`` interface.
