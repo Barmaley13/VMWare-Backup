@@ -30,9 +30,6 @@ import vmware_backup.file_system as fs
 
 
 ### CONSTANTS ###
-CWD = sys.path[0]
-# print "CWD = ", str(CWD)
-
 # Change Installation Directory (if needed)
 HOME = os.path.expanduser('~')
 
@@ -148,9 +145,6 @@ class MyInstall(install):
 
 
 ### SETUP PROCEDURES ###
-# Set current working directory
-os.chdir(CWD)
-
 packages = find_packages(".", "")
 # print "packages = ", str(packages), "\n"
 
