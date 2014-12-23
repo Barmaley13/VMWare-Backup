@@ -30,6 +30,9 @@ import vmware_backup.file_system as fs
 
 
 ### CONSTANTS ###
+CWD = sys.path[0]
+print "CWD = ", str(CWD)
+
 # Change Installation Directory (if needed)
 HOME = os.path.expanduser('~')
 
@@ -123,6 +126,7 @@ def _post_install():
     """ Post install procedures """
     print "*** Creating folders and generating files for user data ***"
     shutil.copy('run_backup.py', HOME)
+    fs.make_dir(HOME + '/docs')
     fs.copy_dir('docs', HOME + '/docs')
 
 
@@ -145,6 +149,9 @@ class MyInstall(install):
 
 
 ### SETUP PROCEDURES ###
+# Set current working directory
+os.chdir(CWD)
+
 packages = find_packages(".", "")
 # print "packages = ", str(packages), "\n"
 
