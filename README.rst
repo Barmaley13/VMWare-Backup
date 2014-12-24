@@ -64,12 +64,11 @@ Alternatively, install package using pip::
     pip install vmware-backup
 
 During installation, vmware backup module will be added to your python site-packages. Also, installation script will
-copy ``run_backup.py`` script along with docs to you current user directory. Under linux that would be ``~``, under
-Windows should be ``C:/Users/Your_Name/``, under Mac OS who knows...
+copy ``run_backup.py`` script to your python script directory. Under linux that could be
+``/usr/local/bin/run_backup.py``, under Windows should be ``C:/Python2.7/Scripts/``, under Mac OS who knows...
 
 
 .. note:: Let us know if you stumble upon missing python modules that we forgot to include.
-
 
 How to use this script to backup your VMWare Virtual Machines
 =============================================================
@@ -87,8 +86,21 @@ can execute following to fetch all the possible options::
 
     python run_backup -h
 
+Depending on your system configuration this script might be added to your current path, so it might be possible
+to execute script without location installation folder. Such as::
+
+    run_backup.py -h
+
+Or::
+
+    run_backup -h
+
 The options should be self explanatory. Set backup settings first, such crone schedule, vmrun path, virtual machines
 path and tape path. Next - enable backup.
+
+If you are trying to provide option such as string with spaces, do it like so::
+
+    python run_backup.py -s '0 22 * * 1-5'
 
 Please refer to https://pypi.python.org/pypi/python-crontab that will explain
 how to format crontab string to set proper backup intervals.

@@ -158,6 +158,7 @@ if len(sys.argv):
     elif 'install' in sys.argv:
         # Enable force to overwrite existing files and create folders
         sys.argv.append('--force')
+        sys.argv.append('--egg')
 
 # Probably none, kept for future reference
 data_files = (non_python_files('vmware_backup'))

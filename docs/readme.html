@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>VMWare Backup &mdash; VMWare Backup 1.01.08 documentation</title>
+    <title>VMWare Backup &mdash; VMWare Backup 1.01.09 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.01.08',
+        VERSION:     '1.01.09',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="VMWare Backup 1.01.08 documentation" href="index.html" />
+    <link rel="top" title="VMWare Backup 1.01.09 documentation" href="index.html" />
     <link rel="next" title="Some Images describing VMWare Backup code structure" href="images.html" />
     <link rel="prev" title="Welcome to VMWare Backup’s documentation!" href="index.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to VMWare Backup’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.01.08 documentation</a> &raquo;</li> 
+        <li><a href="index.html">VMWare Backup 1.01.09 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -106,8 +106,8 @@ backup configurations.</p>
 </pre></div>
 </div>
 <p>During installation, vmware backup module will be added to your python site-packages. Also, installation script will
-copy <tt class="docutils literal"><span class="pre">run_backup.py</span></tt> script along with docs to you current user directory. Under linux that would be <tt class="docutils literal"><span class="pre">~</span></tt>, under
-Windows should be <tt class="docutils literal"><span class="pre">C:/Users/Your_Name/</span></tt>, under Mac OS who knows...</p>
+copy <tt class="docutils literal"><span class="pre">run_backup.py</span></tt> script to your python script directory. Under linux that could be
+<tt class="docutils literal"><span class="pre">/usr/local/bin/run_backup.py</span></tt>, under Windows should be <tt class="docutils literal"><span class="pre">C:/Python2.7/Scripts/</span></tt>, under Mac OS who knows...</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Let us know if you stumble upon missing python modules that we forgot to include.</p>
@@ -129,8 +129,21 @@ can execute following to fetch all the possible options:</p>
 <div class="highlight-python"><div class="highlight"><pre>python run_backup -h
 </pre></div>
 </div>
+<p>Depending on your system configuration this script might be added to your current path, so it might be possible
+to execute script without location installation folder. Such as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">run_backup</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+<p>Or:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">run_backup</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
 <p>The options should be self explanatory. Set backup settings first, such crone schedule, vmrun path, virtual machines
 path and tape path. Next - enable backup.</p>
+<p>If you are trying to provide option such as string with spaces, do it like so:</p>
+<div class="highlight-python"><div class="highlight"><pre>python run_backup.py -s &#39;0 22 * * 1-5&#39;
+</pre></div>
+</div>
 <p>Please refer to <a class="reference external" href="https://pypi.python.org/pypi/python-crontab">https://pypi.python.org/pypi/python-crontab</a> that will explain
 how to format crontab string to set proper backup intervals.</p>
 <p>Also, it is possible to change time stamp format. Please refer to
@@ -222,7 +235,7 @@ charge if you contribute to this distribution or ask politely. Beer donations ar
         <li class="right" >
           <a href="index.html" title="Welcome to VMWare Backup’s documentation!"
              >previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.01.08 documentation</a> &raquo;</li> 
+        <li><a href="index.html">VMWare Backup 1.01.09 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

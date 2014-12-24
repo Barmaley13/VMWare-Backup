@@ -39,6 +39,7 @@ def remove_dir(dir_path):
         shutil.rmtree(dir_path)
 
 
+# TODO: Modify to work under Windows!
 def copy_dir(source_path, destination_path):
     if os.path.isdir(source_path):
         make_dir(destination_path)
