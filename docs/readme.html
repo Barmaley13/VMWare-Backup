@@ -64,8 +64,9 @@ your <tt class="docutils literal"><span class="pre">VMWare</span></tt> machines,
 <p>Once, backup script is executed it goes through the folder with your virtual machines. Matches those to currently
 running machines using <tt class="docutils literal"><span class="pre">vmrun</span></tt>. Goes through the list of the machines, suspending, backing up and resuming those
 individually. If machine is powered off, script backs it up without performing suspend and resume steps.</p>
-<p>Script keeps on logging what have been done, creating log file with a time stamp at the end.</p>
-<p>Also each backup is stored under time stamped folder. During backup, script goes through all the backup volumes and
+<p>Script keeps on logging what have been done, creating log file with a time stamp at the end. (Should be located
+in the same location as <tt class="docutils literal"><span class="pre">run_backup.py</span></tt> script)</p>
+<p>Each backup is stored under time stamped folder. During backup, script goes through all the backup volumes and
 determines which volume to use to backup particular machine. Therefore, it is possible you might end up with
 same date backup spread out on different backup volumes to conserve space.</p>
 <p>One more feature that is worth mentioning. During backup setup stage, script saves your backup settings
