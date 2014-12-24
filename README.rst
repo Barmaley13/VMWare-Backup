@@ -16,9 +16,10 @@ Once, backup script is executed it goes through the folder with your virtual mac
 running machines using ``vmrun``. Goes through the list of the machines, suspending, backing up and resuming those
 individually. If machine is powered off, script backs it up without performing suspend and resume steps.
 
-Script keeps on logging what have been done, creating log file with a time stamp at the end.
+Script keeps on logging what have been done, creating log file with a time stamp at the end. (Should be located
+in the same location as ``run_backup.py`` script)
 
-Also each backup is stored under time stamped folder. During backup, script goes through all the backup volumes and
+Each backup is stored under time stamped folder. During backup, script goes through all the backup volumes and
 determines which volume to use to backup particular machine. Therefore, it is possible you might end up with
 same date backup spread out on different backup volumes to conserve space.
 
