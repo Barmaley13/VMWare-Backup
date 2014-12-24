@@ -30,12 +30,6 @@ import vmware_backup.file_system as fs
 
 
 ### CONSTANTS ###
-CWD = sys.path[0]
-print "CWD = ", str(CWD)
-
-# Change Installation Directory (if needed)
-HOME = os.path.expanduser('~')
-
 # SITE_PACKAGES = get_python_lib()
 
 
@@ -93,6 +87,11 @@ def _generate_docs(doc_packages):
     Generates documentation. Performed before generating distribution on host (Windows) system.
     """
     print "*** Generating Documentation ***"
+    # Set current working directory
+    CWD = sys.path[0]
+    print "CWD = ", str(CWD)
+    os.chdir(CWD)
+
     # Rebuilding package module interconnections and package classes images.
     for package_name, package_path in doc_packages.items():
         package_path = package_path.split('vmware_backup')
@@ -124,10 +123,10 @@ def _pre_install():
 
 def _post_install():
     """ Post install procedures """
-    print "*** Creating folders and generating files for user data ***"
-    shutil.copy('run_backup.py', HOME)
-    fs.make_dir(HOME + '/docs')
-    fs.copy_dir('docs', HOME + '/docs')
+    pass
+    # print "*** Creating folders and generating files for user data ***"
+    # HOME = os.path.expanduser('~')
+    # shutil.copy('run_backup.py', HOME)
 
 
 ### CLASSES ###
@@ -149,9 +148,6 @@ class MyInstall(install):
 
 
 ### SETUP PROCEDURES ###
-# Set current working directory
-os.chdir(CWD)
-
 packages = find_packages(".", "")
 # print "packages = ", str(packages), "\n"
 
@@ -184,6 +180,7 @@ setup(
     package_dir=packages,
     package_data=package_data,
     data_files=data_files,
+    scripts=['run_backup.py'],
     cmdclass={'install_data': MyInstallData, 'install': MyInstall},
     requires=[
         # Anything else?
