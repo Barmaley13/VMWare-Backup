@@ -70,6 +70,7 @@ copy ``run_backup.py`` script to your python script directory. Under linux that 
 
 .. note:: Let us know if you stumble upon missing python modules that we forgot to include.
 
+
 How to use this script to backup your VMWare Virtual Machines
 =============================================================
 
@@ -84,7 +85,7 @@ Once again, current limitations are:
 First and foremost, find where installation procedure placed ``run_backup.py`` file. Once, the file is located, you
 can execute following to fetch all the possible options::
 
-    python run_backup -h
+    python run_backup.py -h
 
 Depending on your system configuration this script might be added to your current path, so it might be possible
 to execute script without location installation folder. Such as::
@@ -113,7 +114,7 @@ for friends from Europe and other parts of the world if you want to change month
 Notes for Code Developers
 =========================
 
-The vmware_backup module comes with some documentation. It is mostly self generated from the code itself.
+The ``vmware_backup`` module comes with some documentation. It is mostly self generated from the code itself.
 There are also images giving basic overview as far as package modules and classes. Please let me know, if you end up
 digging through code and willing to extend documentation.
 

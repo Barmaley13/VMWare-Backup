@@ -157,8 +157,10 @@ if len(sys.argv):
         print "*** Generation Distribution ***"
     elif 'install' in sys.argv:
         # Enable force to overwrite existing files and create folders
-        sys.argv.append('--force')
-        sys.argv.append('--egg')
+        if '--force' not in sys.argv:
+            sys.argv.append('--force')
+        if '--single-version-externally-managed' in sys.argv:
+            sys.argv.remove('--single-version-externally-managed')
 
 # Probably none, kept for future reference
 data_files = (non_python_files('vmware_backup'))

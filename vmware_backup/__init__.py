@@ -17,7 +17,7 @@ http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
 """
 
 __author__ = 'Kirill V. Belyayev'
-__version__ = '1.01.09'
+__version__ = '1.01.10'
 
 __copyright__ = "Copyright 2014, CIMA Systems"
 __license__ = "GPL"
