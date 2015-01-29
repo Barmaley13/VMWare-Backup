@@ -101,6 +101,7 @@ def get_size(path):
     return total_size  # size in bytes
 
 
+# TODO: Change to "free space = drive size - space occupied" scheme
 def get_free_space(path):
     """
     Return free space in bytes
