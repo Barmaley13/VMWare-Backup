@@ -13,6 +13,7 @@ import os
 import sys
 import commands
 import glob
+import time
 
 from . import file_system as fs
 from .default_settings import LOG_TS_FORMAT
@@ -20,6 +21,7 @@ from .default_settings import LOG_TS_FORMAT
 
 ### CONSTANTS ###
 WHILE_LOOP_ATTEMPTS = 10
+WHILE_LOOP_WAIT_TIME = 10       # seconds
 
 
 ### FUNCTIONS ###
@@ -84,6 +86,7 @@ class VirtualMachine(object):
                 self._print('Suspending virtual machine... (attempt #' + str(total_attempts) + ')')
                 os.system(self.settings['vmrun_path'] + ' suspend "' + self.vmware + '" soft')
                 self._print('Suspend of virtual machine is completed! (attempt #' + str(total_attempts) + ')')
+                time.sleep(WHILE_LOOP_WAIT_TIME)
 
     def _resume(self):
         if self.vmware:
@@ -93,6 +96,7 @@ class VirtualMachine(object):
                 self._print('Resuming virtual machine... (attempt #' + str(total_attempts) + ')')
                 os.system(self.settings['vmrun_path'] + ' start "' + self.vmware + '" nogui')
                 self._print('Resume of virtual machine is completed! (attempt #' + str(total_attempts) + ')')
+                time.sleep(WHILE_LOOP_WAIT_TIME)
 
     def _fetch_base_path(self, space_needed):
         tape_to_use = None
@@ -108,6 +112,7 @@ class VirtualMachine(object):
                 tape_name = str(tape.split('/')[-1])
                 self._print("Space available on tape '" + tape_name + "': " + fs.print_memory_size(space_available)
                             + ' (attempt #' + str(total_attempts) + ')')
+                time.sleep(WHILE_LOOP_WAIT_TIME)
 
             # Is it enough space?
             if space_available >= space_needed:
@@ -143,6 +148,7 @@ class VirtualMachine(object):
             space_needed = fs.get_size(self.path)
             self._print('Space needed: ' + fs.print_memory_size(space_needed)
                         + ' (attempt #' + str(total_attempts) + ')')
+            time.sleep(WHILE_LOOP_WAIT_TIME)
 
         # Figure out what tape we will use to back up this Virtual Machine
         self.base_backup_path = self._fetch_base_path(space_needed)
@@ -153,10 +159,11 @@ class VirtualMachine(object):
         self._print('Starting Backup...')
         try:
             total_attempts = 0
-            while not os.path.isdir(self.base_backup_path) and total_attempts < WHILE_LOOP_ATTEMPTS:
+            while not os.path.isdir(self.vm_backup_path) and total_attempts < WHILE_LOOP_ATTEMPTS:
                 total_attempts += 1
                 self._print('Creating backup folder... (attempt #' + str(total_attempts) + ')')
-                fs.make_dir(self.base_backup_path)
+                fs.make_dir(self.vm_backup_path)
+                time.sleep(WHILE_LOOP_WAIT_TIME)
 
             fs.copy_dir(self.path, self.vm_backup_path)
         except OSError as e:

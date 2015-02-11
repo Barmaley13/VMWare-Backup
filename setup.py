@@ -21,7 +21,7 @@ import shutil
 import glob
 
 from distutils.core import setup
-from distutils.sysconfig import get_python_lib
+# from distutils.sysconfig import get_python_lib
 from distutils.command.install_data import install_data
 from distutils.command.install import install
 
