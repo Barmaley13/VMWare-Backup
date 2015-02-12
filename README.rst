@@ -24,7 +24,9 @@ determines which volume to use to backup particular machine. Therefore, it is po
 same date backup spread out on different backup volumes to conserve space.
 
 One more feature that is worth mentioning. During backup setup stage, script saves your backup settings
-to a file so those settings are saved to the hard drive. (or a solid state drive, I don't know what you might have...)
+to a file(``backup_settings.db``) so those settings are saved to the hard drive.
+(or a solid state drive, I don't know what you might have...)
+Meaning, that you can update this software without affecting your backup settings!
 
 Operating System Considerations
 _______________________________
@@ -41,12 +43,23 @@ product this backup script might require ``vmrun`` modification. Which is comman
 talk to ``VMWare Workstation``. My knoweledge of VMWare products is quite limited so suggestions, additions,
 modifications are welcome!
 
+In our experience, executing ``vmrun`` communication commands are a bit slow and they do fail at times.
+Therefore, we've introduce multiple attempts whenever we are issuing commands to ``vmrun``. The script checks
+virtual machine state after each communication attempt to figure out if command was executed successfully.
+Also, each consecutive attempt is done with a delay that will hopefully give some time to the ``VMWare`` engine
+to respond to a certain action.
+
 Backup Media
 ____________
 
-Furthermore, we've been using this script to back up virtual machines to tape. Our tape drive consist of 8 tapes, which
-shows up in Linux as a drive with 8 volumes. It is possible to modify script to work with single tape or any other
-backup configurations.
+Furthermore, we've been using this script to back up virtual machines to a tape drive. Our tape drive consist of 8
+tapes, which shows up in Linux as a drive with 8 volumes. It is possible to modify script to work with single tape or
+any other backup configurations.
+
+In our experience, the tape drive has not been very fast or responsive compare to the hard drive. Therefore, we've
+introduce multiple attempts whenever we accessing the backup media. Also, each consecutive attempt is done with a
+delay that will hopefully give some time to the tape drive to respond to a certain action. The attempt number and delay
+period is set in ``default_settings.py`` file.
 
 
 Installation

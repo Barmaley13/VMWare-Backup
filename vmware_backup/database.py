@@ -13,8 +13,8 @@ __license__ = "GPL"
 ### INCLUDES ###
 import copy
 
-from . import file_system as fs
-from .ordered_dict import OrderedDict
+import file_system as fs
+from ordered_dict import OrderedDict
 
 
 ### CLASSES ###

@@ -5,6 +5,9 @@ Logs backup process
 
 __author__ = 'Kirill V. Belyayev'
 
+__copyright__ = "Copyright 2014, CIMA Systems"
+__license__ = "GPL"
+
 
 ### INCLUDES ###
 import sys

@@ -15,13 +15,9 @@ import commands
 import glob
 import time
 
-from . import file_system as fs
-from .default_settings import LOG_TS_FORMAT
-
-
-### CONSTANTS ###
-WHILE_LOOP_ATTEMPTS = 10
-WHILE_LOOP_WAIT_TIME = 10       # seconds
+import file_system as fs
+from default_settings import LOG_TS_FORMAT
+from decorators import multiple_attempts
 
 
 ### FUNCTIONS ###
@@ -47,6 +43,7 @@ class VirtualMachine(object):
         self.base_backup_path = None
         self.vm_backup_path = None
 
+    ## Some generic internal methods ##
     def _print(self, message):
         # Time Stamp Options 1 and 2
         if 'log_ts_format' in self.settings:
@@ -56,10 +53,13 @@ class VirtualMachine(object):
 
     def _exit(self, message):
         self._print(message)
-        self._resume()
+        self.resume()
         sys.exit()
 
+    ## VMWare Communication Methods ##
+    # Internal #
     def _fetch_vmware(self):
+        """ Fetches vmware path if machine is currently running """
         vm_list = commands.getoutput(self.settings['vmrun_path'] + ' list').split('\n')
         if 'Total running VMs:' in vm_list[0]:
             self._print(vm_list.pop(0))
@@ -78,41 +78,76 @@ class VirtualMachine(object):
 
         return vmware_path
 
-    def _suspend(self):
-        if self.vmware:
-            total_attempts = 0
-            while self._fetch_vmware() is not None and total_attempts < WHILE_LOOP_ATTEMPTS:
-                total_attempts += 1
-                self._print('Suspending virtual machine... (attempt #' + str(total_attempts) + ')')
-                os.system(self.settings['vmrun_path'] + ' suspend "' + self.vmware + '" soft')
-                self._print('Suspend of virtual machine is completed! (attempt #' + str(total_attempts) + ')')
-                time.sleep(WHILE_LOOP_WAIT_TIME)
+    @multiple_attempts
+    def _suspend(self, **kwargs):
+        """ Suspending Virtual Machine (inner function) """
+        vm_suspend_success = bool(self._fetch_vmware() is None)
 
-    def _resume(self):
+        if not vm_suspend_success:
+            total_attempts = str(kwargs['total_attempts'])
+            self._print('Suspending virtual machine... (attempt #' + total_attempts + ')')
+            os.system(self.settings['vmrun_path'] + ' suspend "' + self.vmware + '" soft')
+            self._print('Suspend of virtual machine is completed! (attempt #' + total_attempts + ')')
+
+            vm_suspend_success = bool(self._fetch_vmware() is None)
+
+        return vm_suspend_success, None
+
+    @multiple_attempts
+    def _resume(self, **kwargs):
+        """ Resuming Virtual Machine (inner function) """
+        vm_resume_success = bool(self._fetch_vmware() is not None)
+
+        if not vm_resume_success:
+            total_attempts = str(kwargs['total_attempts'])
+            self._print('Resuming virtual machine... (attempt #' + total_attempts + ')')
+            os.system(self.settings['vmrun_path'] + ' start "' + self.vmware + '" nogui')
+            self._print('Resume of virtual machine is completed! (attempt #' + total_attempts + ')')
+
+            vm_resume_success = bool(self._fetch_vmware() is not None)
+
+        return vm_resume_success, None
+
+    # External #
+    # Note: User has to fetch state of the machine before using suspend or resume
+    def state(self):
+        """ Tells if Virtual Machine is currently running """
+        self.vmware = self._fetch_vmware()
+
+        return bool(self.vmware)
+
+    def suspend(self):
+        """ Suspending Virtual Machine """
         if self.vmware:
-            total_attempts = 0
-            while self._fetch_vmware() is None and total_attempts < WHILE_LOOP_ATTEMPTS:
-                total_attempts += 1
-                self._print('Resuming virtual machine... (attempt #' + str(total_attempts) + ')')
-                os.system(self.settings['vmrun_path'] + ' start "' + self.vmware + '" nogui')
-                self._print('Resume of virtual machine is completed! (attempt #' + str(total_attempts) + ')')
-                time.sleep(WHILE_LOOP_WAIT_TIME)
+            self._suspend()
+
+    def resume(self):
+        """ Resuming Virtual Machine """
+        if self.vmware:
+            self._resume()
+
+    ## Tape Methods ##
+    @multiple_attempts
+    def _space_available(self, tape, **kwargs):
+        """ Reads available space on particular tape """
+        total_attempts = str(kwargs['total_attempts'])
+        space_available = fs.get_free_space(tape)
+        tape_name = str(tape.split('/')[-1])
+        self._print("Space available on tape '" + tape_name + "': " + fs.print_memory_size(space_available)
+                    + ' (attempt #' + total_attempts + ')')
+
+        space_fetched_successfully = bool(space_available > 0)
+
+        return space_fetched_successfully, space_available
 
     def _fetch_base_path(self, space_needed):
+        """ Figuring out what tape to use and generating path for the future backup location """
         tape_to_use = None
         # TODO: Add support for single tape system
         tape_list = glob.glob(self.settings['tape_path'] + '/*')
         for tape in tape_list:
             # Figure out how much space we have on this tape
-            total_attempts = 0
-            space_available = 0
-            while space_available == 0 and total_attempts < WHILE_LOOP_ATTEMPTS:
-                total_attempts += 1
-                space_available = fs.get_free_space(tape)
-                tape_name = str(tape.split('/')[-1])
-                self._print("Space available on tape '" + tape_name + "': " + fs.print_memory_size(space_available)
-                            + ' (attempt #' + str(total_attempts) + ')')
-                time.sleep(WHILE_LOOP_WAIT_TIME)
+            space_available = self._space_available(tape)
 
             # Is it enough space?
             if space_available >= space_needed:
@@ -128,44 +163,43 @@ class VirtualMachine(object):
 
         return tape_to_use + '/' + vm_backup_name
 
-    def backup(self):
-        # Print some basic info about this Virtual Machine
-        self._print('VM Name: ' + self.name)
-        self._print('VM Path: ' + self.path)
+    @multiple_attempts
+    def _creating_backup_folder(self, **kwargs):
+        """ Creating backup folder on tape """
+        folder_created = os.path.isdir(self.vm_backup_path)
 
-        # Figure out if Virtual Machine is currently running
-        self.vmware = self._fetch_vmware()
-        self._print('VM Running: ' + str(bool(self.vmware)))
-
-        # Suspend Virtual Machine (if needed)
-        self._suspend()
-
-        # Figure out how much space this Virtual Machine is taking up
-        total_attempts = 0
-        space_needed = 0
-        while space_needed == 0 and total_attempts < WHILE_LOOP_ATTEMPTS:
-            total_attempts += 1
-            space_needed = fs.get_size(self.path)
-            self._print('Space needed: ' + fs.print_memory_size(space_needed)
-                        + ' (attempt #' + str(total_attempts) + ')')
-            time.sleep(WHILE_LOOP_WAIT_TIME)
-
-        # Figure out what tape we will use to back up this Virtual Machine
-        self.base_backup_path = self._fetch_base_path(space_needed)
-        self.vm_backup_path = self.base_backup_path + '/' + self.name
-        self._print('BackUp Location: ' + str(self.vm_backup_path))
-
-        # Backup this Virtual Machine
-        self._print('Starting Backup...')
-        try:
-            total_attempts = 0
-            while not os.path.isdir(self.vm_backup_path) and total_attempts < WHILE_LOOP_ATTEMPTS:
-                total_attempts += 1
-                self._print('Creating backup folder... (attempt #' + str(total_attempts) + ')')
+        if not folder_created:
+            total_attempts = str(kwargs['total_attempts'])
+            try:
+                self._print('Creating backup folder... (attempt #' + total_attempts + ')')
                 fs.make_dir(self.vm_backup_path)
-                time.sleep(WHILE_LOOP_WAIT_TIME)
 
+            except OSError as e:
+                self._print('Could not create folder "' + self.vm_backup_path + '" due to an OS error '
+                                                                                '({0}): {1}'.format(e.errno, e.strerror))
+            except IOError as e:
+                self._print('Could not create folder "' + self.vm_backup_path + '" due to an IO error '
+                                                                                '({0}): {1}'.format(e.errno, e.strerror))
+            except:
+                self._print('Could not create folder "' + self.vm_backup_path + '" due to an error: '
+                            + str(sys.exc_info()[0]))
+            else:
+                self._print('Backup folder is successfully created!')
+
+            folder_created = os.path.isdir(self.vm_backup_path)
+
+        return folder_created, folder_created
+
+    @multiple_attempts
+    def _backup(self, **kwargs):
+        """ Backup (internal function)"""
+        successful_backup = False
+        total_attempts = str(kwargs['total_attempts'])
+
+        try:
+            self._print('Starting Backup... (attempt #' + total_attempts + ')')
             fs.copy_dir(self.path, self.vm_backup_path)
+
         except OSError as e:
             self._print('Could not backup "' + self.name + '" virtual machine due to an OS error'
                                                            '({0}): {1}'.format(e.errno, e.strerror))
@@ -177,6 +211,39 @@ class VirtualMachine(object):
                         + str(sys.exc_info()[0]))
         else:
             self._print('Backup Completed!')
+            successful_backup = True
+
+        return successful_backup, None
+
+    def backup(self):
+        """ Execute backup of this virtual machine """
+        # Print some basic info about this Virtual Machine
+        self._print('VM Name: ' + self.name)
+        self._print('VM Path: ' + self.path)
+
+        # Figure out if Virtual Machine is currently running
+        vm_state = self.state()
+        self._print('VM Running: ' + str(vm_state))
+
+        # Suspend Virtual Machine (if needed)
+        self.suspend()
+
+        # Figure out how much space this Virtual Machine is taking up
+        space_needed = fs.get_size(self.path)
+        self._print('Space needed: ' + fs.print_memory_size(space_needed))
+
+        # Figure out what tape we will use to back up this Virtual Machine
+        self.base_backup_path = self._fetch_base_path(space_needed)
+        self.vm_backup_path = self.base_backup_path + '/' + self.name
+        self._print('BackUp Location: ' + str(self.vm_backup_path))
+
+        # Creating backup folder
+        backup_folder_created = self._creating_backup_folder()
+
+        if backup_folder_created:
+            # Backup this Virtual Machine
+            # TODO: Add some compression options and functions
+            self._backup()
 
         # Resume Virtual Machine (if needed)
-        self._resume()
+        self.resume()
