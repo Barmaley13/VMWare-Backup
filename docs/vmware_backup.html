@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>vmware_backup package &mdash; VMWare Backup 1.01.11 documentation</title>
+    <title>vmware_backup package &mdash; VMWare Backup 1.02.01 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.01.11',
+        VERSION:     '1.02.01',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="VMWare Backup 1.01.11 documentation" href="index.html" />
+    <link rel="top" title="VMWare Backup 1.02.01 documentation" href="index.html" />
     <link rel="up" title="vmware_backup" href="modules.html" />
     <link rel="prev" title="vmware_backup" href="modules.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="modules.html" title="vmware_backup"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.01.11 documentation</a> &raquo;</li>
+        <li><a href="index.html">VMWare Backup 1.02.01 documentation</a> &raquo;</li>
           <li><a href="modules.html" accesskey="U">vmware_backup</a> &raquo;</li> 
       </ul>
     </div>  
@@ -95,6 +95,32 @@ Make sure to provide plain data, no objects, classes or anything that might be h
 <em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseOrderedDict</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseOrderedDict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database._DatabaseDictBase</span></tt></p>
 <p>DatabaseOrderedDict class</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vmware_backup.decorators">
+<span id="vmware-backup-decorators-module"></span><h2>vmware_backup.decorators module<a class="headerlink" href="#module-vmware_backup.decorators" title="Permalink to this headline">¶</a></h2>
+<p>Collection of decorators to make our life a little easier
+Based on a recipe from here:
+<a class="reference external" href="https://wiki.python.org/moin/PythonDecoratorLibrary">https://wiki.python.org/moin/PythonDecoratorLibrary</a></p>
+<dl class="function">
+<dt id="vmware_backup.decorators.multiple_attempts">
+<tt class="descclassname">vmware_backup.decorators.</tt><tt class="descname">multiple_attempts</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#vmware_backup.decorators.multiple_attempts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to perform multiple attempts</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware_backup.decorators.simple_decorator">
+<tt class="descclassname">vmware_backup.decorators.</tt><tt class="descname">simple_decorator</tt><big>(</big><em>decorator</em><big>)</big><a class="headerlink" href="#vmware_backup.decorators.simple_decorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This decorator can be used to turn simple functions
+into well-behaved decorators, so long as the decorators
+are fairly simple. If a decorator expects a function and
+returns a function (no descriptors), and if it doesn&#8217;t
+modify function attributes or docstring, then it is
+eligible to use this. Simply apply &#64;simple_decorator to
+your decorator and it will automatically preserve the
+docstring and function attributes of functions to which
+it is applied.</p>
 </dd></dl>
 
 </div>
@@ -318,7 +344,26 @@ In either case, this is followed by:     for k, v in F.items(): od[k] = v</p>
 <dl class="method">
 <dt id="vmware_backup.virtual_machine.VirtualMachine.backup">
 <tt class="descname">backup</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.virtual_machine.VirtualMachine.backup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Execute backup of this virtual machine</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.virtual_machine.VirtualMachine.resume">
+<tt class="descname">resume</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.virtual_machine.VirtualMachine.resume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resuming Virtual Machine</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.virtual_machine.VirtualMachine.state">
+<tt class="descname">state</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.virtual_machine.VirtualMachine.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells if Virtual Machine is currently running</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.virtual_machine.VirtualMachine.suspend">
+<tt class="descname">suspend</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.virtual_machine.VirtualMachine.suspend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Suspending Virtual Machine</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -357,6 +402,7 @@ VMWare Command Line
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-vmware_backup.cron">vmware_backup.cron module</a></li>
 <li><a class="reference internal" href="#module-vmware_backup.database">vmware_backup.database module</a></li>
+<li><a class="reference internal" href="#module-vmware_backup.decorators">vmware_backup.decorators module</a></li>
 <li><a class="reference internal" href="#module-vmware_backup.default_settings">vmware_backup.default_settings module</a></li>
 <li><a class="reference internal" href="#module-vmware_backup.file_system">vmware_backup.file_system module</a></li>
 <li><a class="reference internal" href="#module-vmware_backup.logger">vmware_backup.logger module</a></li>
@@ -404,7 +450,7 @@ VMWare Command Line
         <li class="right" >
           <a href="modules.html" title="vmware_backup"
              >previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.01.11 documentation</a> &raquo;</li>
+        <li><a href="index.html">VMWare Backup 1.02.01 documentation</a> &raquo;</li>
           <li><a href="modules.html" >vmware_backup</a> &raquo;</li> 
       </ul>
     </div>

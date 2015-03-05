@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>VMWare Backup &mdash; VMWare Backup 1.01.11 documentation</title>
+    <title>VMWare Backup &mdash; VMWare Backup 1.02.01 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.01.11',
+        VERSION:     '1.02.01',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="VMWare Backup 1.01.11 documentation" href="index.html" />
+    <link rel="top" title="VMWare Backup 1.02.01 documentation" href="index.html" />
     <link rel="next" title="Some Images describing VMWare Backup code structure" href="images.html" />
     <link rel="prev" title="Welcome to VMWare Backup’s documentation!" href="index.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to VMWare Backup’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.01.11 documentation</a> &raquo;</li> 
+        <li><a href="index.html">VMWare Backup 1.02.01 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -70,7 +70,9 @@ in the same location as <tt class="docutils literal"><span class="pre">run_backu
 determines which volume to use to backup particular machine. Therefore, it is possible you might end up with
 same date backup spread out on different backup volumes to conserve space.</p>
 <p>One more feature that is worth mentioning. During backup setup stage, script saves your backup settings
-to a file so those settings are saved to the hard drive. (or a solid state drive, I don&#8217;t know what you might have...)</p>
+to a file(<tt class="docutils literal"><span class="pre">backup_settings.db</span></tt>) so those settings are saved to the hard drive.
+(or a solid state drive, I don&#8217;t know what you might have...)
+Meaning, that you can update this software without affecting your backup settings!</p>
 </div>
 <div class="section" id="operating-system-considerations">
 <h3>Operating System Considerations<a class="headerlink" href="#operating-system-considerations" title="Permalink to this headline">¶</a></h3>
@@ -84,12 +86,21 @@ for the <tt class="docutils literal"><span class="pre">Windows</span></tt>. I am
 product this backup script might require <tt class="docutils literal"><span class="pre">vmrun</span></tt> modification. Which is command prompt utility that we&#8217;ve used to
 talk to <tt class="docutils literal"><span class="pre">VMWare</span> <span class="pre">Workstation</span></tt>. My knoweledge of VMWare products is quite limited so suggestions, additions,
 modifications are welcome!</p>
+<p>In our experience, executing <tt class="docutils literal"><span class="pre">vmrun</span></tt> communication commands are a bit slow and they do fail at times.
+Therefore, we&#8217;ve introduce multiple attempts whenever we are issuing commands to <tt class="docutils literal"><span class="pre">vmrun</span></tt>. The script checks
+virtual machine state after each communication attempt to figure out if command was executed successfully.
+Also, each consecutive attempt is done with a delay that will hopefully give some time to the <tt class="docutils literal"><span class="pre">VMWare</span></tt> engine
+to respond to a certain action.</p>
 </div>
 <div class="section" id="backup-media">
 <h3>Backup Media<a class="headerlink" href="#backup-media" title="Permalink to this headline">¶</a></h3>
-<p>Furthermore, we&#8217;ve been using this script to back up virtual machines to tape. Our tape drive consist of 8 tapes, which
-shows up in Linux as a drive with 8 volumes. It is possible to modify script to work with single tape or any other
-backup configurations.</p>
+<p>Furthermore, we&#8217;ve been using this script to back up virtual machines to a tape drive. Our tape drive consist of 8
+tapes, which shows up in Linux as a drive with 8 volumes. It is possible to modify script to work with single tape or
+any other backup configurations.</p>
+<p>In our experience, the tape drive has not been very fast or responsive compare to the hard drive. Therefore, we&#8217;ve
+introduce multiple attempts whenever we accessing the backup media. Also, each consecutive attempt is done with a
+delay that will hopefully give some time to the tape drive to respond to a certain action. The attempt number and delay
+period is set in <tt class="docutils literal"><span class="pre">default_settings.py</span></tt> file.</p>
 </div>
 </div>
 <div class="section" id="installation">
@@ -236,7 +247,7 @@ charge if you contribute to this distribution or ask politely. Beer donations ar
         <li class="right" >
           <a href="index.html" title="Welcome to VMWare Backup’s documentation!"
              >previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.01.11 documentation</a> &raquo;</li> 
+        <li><a href="index.html">VMWare Backup 1.02.01 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

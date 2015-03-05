@@ -20,6 +20,14 @@ vmware_backup.database module
     :undoc-members:
     :show-inheritance:
 
+vmware_backup.decorators module
+-------------------------------
+
+.. automodule:: vmware_backup.decorators
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 vmware_backup.default_settings module
 -------------------------------------
 
