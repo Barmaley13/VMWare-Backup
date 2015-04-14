@@ -136,7 +136,7 @@ def print_memory_size(size):
             return memory_format % (size, u)
         size /= memory_radix
 
-    return memory_format % (size,  memory_units[-1])
+    return memory_format % (size, memory_units[-1])
 
 
 ## Time Stamp Functions ##
