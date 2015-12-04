@@ -88,9 +88,9 @@ def _generate_docs(doc_packages):
     """
     print "*** Generating Documentation ***"
     # Set current working directory
-    CWD = sys.path[0]
-    print "CWD = ", str(CWD)
-    os.chdir(CWD)
+    cwd = sys.path[0]
+    print "CWD = ", str(cwd)
+    os.chdir(cwd)
 
     # Rebuilding package module interconnections and package classes images.
     for package_name, package_path in doc_packages.items():

@@ -127,18 +127,14 @@ class VirtualMachine(object):
             self._resume()
 
     ## Tape Methods ##
-    @multiple_attempts
+    # @multiple_attempts
     def _space_available(self, tape, **kwargs):
         """ Reads available space on particular tape """
-        total_attempts = str(kwargs['total_attempts'])
         space_available = fs.get_free_space(tape)
         tape_name = str(tape.split('/')[-1])
-        self._print("Space available on tape '" + tape_name + "': " + fs.print_memory_size(space_available)
-                    + ' (attempt #' + total_attempts + ')')
+        self._print("Space available on tape '" + tape_name + "': " + fs.print_memory_size(space_available))
 
-        space_fetched_successfully = bool(space_available > 0)
-
-        return space_fetched_successfully, space_available
+        return space_available
 
     def _fetch_base_path(self, space_needed):
         """ Figuring out what tape to use and generating path for the future backup location """
@@ -175,11 +171,11 @@ class VirtualMachine(object):
                 fs.make_dir(self.vm_backup_path)
 
             except OSError as e:
-                self._print('Could not create folder "' + self.vm_backup_path + '" due to an OS error '
-                                                                                '({0}): {1}'.format(e.errno, e.strerror))
+                self._print('Could not create folder "' + self.vm_backup_path +
+                            '" due to an OS error ({0}): {1}'.format(e.errno, e.strerror))
             except IOError as e:
-                self._print('Could not create folder "' + self.vm_backup_path + '" due to an IO error '
-                                                                                '({0}): {1}'.format(e.errno, e.strerror))
+                self._print('Could not create folder "' + self.vm_backup_path +
+                            '" due to an IO error ({0}): {1}'.format(e.errno, e.strerror))
             except:
                 self._print('Could not create folder "' + self.vm_backup_path + '" due to an error: '
                             + str(sys.exc_info()[0]))
@@ -201,11 +197,11 @@ class VirtualMachine(object):
             fs.copy_dir(self.path, self.vm_backup_path)
 
         except OSError as e:
-            self._print('Could not backup "' + self.name + '" virtual machine due to an OS error'
-                                                           '({0}): {1}'.format(e.errno, e.strerror))
+            self._print('Could not backup "' + self.name +
+                        '" virtual machine due to an OS error ({0}): {1}'.format(e.errno, e.strerror))
         except IOError as e:
-            self._print('Could not backup "' + self.name + '" virtual machine due to an IO error'
-                                                           '({0}): {1}'.format(e.errno, e.strerror))
+            self._print('Could not backup "' + self.name +
+                        '" virtual machine due to an IO error ({0}): {1}'.format(e.errno, e.strerror))
         except:
             self._print('Could not backup "' + self.name + '" virtual machine due to an error: '
                         + str(sys.exc_info()[0]))
