@@ -81,32 +81,32 @@ class VirtualMachine(object):
     @multiple_attempts
     def _suspend(self, **kwargs):
         """ Suspending Virtual Machine (inner function) """
-        vm_suspend_success = bool(self._fetch_vmware() is None)
+        kwargs['success'] = bool(self._fetch_vmware() is None)
 
-        if not vm_suspend_success:
+        if not kwargs['success']:
             total_attempts = str(kwargs['total_attempts'])
             self._print('Suspending virtual machine... (attempt #' + total_attempts + ')')
             os.system(self.settings['vmrun_path'] + ' suspend "' + self.vmware + '" soft')
             self._print('Suspend of virtual machine is completed! (attempt #' + total_attempts + ')')
 
-            vm_suspend_success = bool(self._fetch_vmware() is None)
+            kwargs['success'] = bool(self._fetch_vmware() is None)
 
-        return vm_suspend_success, None
+        return kwargs
 
     @multiple_attempts
     def _resume(self, **kwargs):
         """ Resuming Virtual Machine (inner function) """
-        vm_resume_success = bool(self._fetch_vmware() is not None)
+        kwargs['success'] = bool(self._fetch_vmware() is not None)
 
-        if not vm_resume_success:
+        if not kwargs['success']:
             total_attempts = str(kwargs['total_attempts'])
             self._print('Resuming virtual machine... (attempt #' + total_attempts + ')')
             os.system(self.settings['vmrun_path'] + ' start "' + self.vmware + '" nogui')
             self._print('Resume of virtual machine is completed! (attempt #' + total_attempts + ')')
 
-            vm_resume_success = bool(self._fetch_vmware() is not None)
+            kwargs['success'] = bool(self._fetch_vmware() is not None)
 
-        return vm_resume_success, None
+        return kwargs
 
     # External #
     # Note: User has to fetch state of the machine before using suspend or resume
@@ -127,7 +127,6 @@ class VirtualMachine(object):
             self._resume()
 
     ## Tape Methods ##
-    # @multiple_attempts
     def _space_available(self, tape, **kwargs):
         """ Reads available space on particular tape """
         space_available = fs.get_free_space(tape)
@@ -162,9 +161,9 @@ class VirtualMachine(object):
     @multiple_attempts
     def _creating_backup_folder(self, **kwargs):
         """ Creating backup folder on tape """
-        folder_created = os.path.isdir(self.vm_backup_path)
+        kwargs['success'] = kwargs['output'] = os.path.isdir(self.vm_backup_path)
 
-        if not folder_created:
+        if not kwargs['success']:
             total_attempts = str(kwargs['total_attempts'])
             try:
                 self._print('Creating backup folder... (attempt #' + total_attempts + ')')
@@ -182,14 +181,14 @@ class VirtualMachine(object):
             else:
                 self._print('Backup folder is successfully created!')
 
-            folder_created = os.path.isdir(self.vm_backup_path)
+            kwargs['success'] = kwargs['output'] = os.path.isdir(self.vm_backup_path)
 
-        return folder_created, folder_created
+        return kwargs
 
     @multiple_attempts
     def _backup(self, **kwargs):
         """ Backup (internal function)"""
-        successful_backup = False
+        kwargs['success'] = False
         total_attempts = str(kwargs['total_attempts'])
 
         try:
@@ -207,9 +206,9 @@ class VirtualMachine(object):
                         + str(sys.exc_info()[0]))
         else:
             self._print('Backup Completed!')
-            successful_backup = True
+            kwargs['success'] = True
 
-        return successful_backup, None
+        return kwargs
 
     def backup(self):
         """ Execute backup of this virtual machine """

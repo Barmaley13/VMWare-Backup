@@ -48,22 +48,21 @@ def multiple_attempts(func):
     """ Decorator to perform multiple attempts """
     def _multiple_attempts(*args, **kwargs):
 
-        total_attempts = 0
-        success = False
-        output = None
+        kwargs['total_attempts'] = 0
+        kwargs['success'] = False
+        kwargs['output'] = None
 
-        while not success and total_attempts < ATTEMPT_NUMBER:
-            total_attempts += 1
-            kwargs['total_attempts'] = total_attempts
+        while not kwargs['success'] and kwargs['total_attempts'] < ATTEMPT_NUMBER:
+            kwargs['total_attempts'] += 1
 
-            success, output = func(*args, **kwargs)
+            kwargs = func(*args, **kwargs)
 
-            if success or total_attempts >= ATTEMPT_NUMBER:
+            if kwargs['success'] or kwargs['total_attempts'] >= ATTEMPT_NUMBER:
                 break
             else:
                 time.sleep(ATTEMPT_TIMEOUT)
 
-        return output
+        return kwargs['output']
 
     return _multiple_attempts
 
@@ -81,19 +80,21 @@ if __name__ == '__main__':
         Little function that tests above decorator
         Also, gives an example how to use above decorator
         """
-        success = False
+        kwargs['success'] = False
 
         print create_time_stamp(LOG_TS_FORMAT), 'Attempt # ' + str(kwargs['total_attempts'])
 
         random_number = random.random()
         success_margin = 0.75
         if random_number >= success_margin:
-            success = True
+            kwargs['success'] = True
 
         print 'Random number: ' + str(random_number)
         print 'Success Margin: ' + str(success_margin)
 
-        return success, random_number
+        kwargs['output'] = random_number
+
+        return kwargs
 
     test_results = test_function()
     print "Test Results: ", str(test_results)
