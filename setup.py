@@ -1,16 +1,12 @@
 # !/usr/bin/env python
 """
-Distribution package utilities
+Script for generating package distribution
+
 Used quite a few recipes from here:
 https://wiki.python.org/moin/Distutils/Cookbook
 Some hints on how to extend commands
 http://stackoverflow.com/questions/1321270/how-to-extend-distutils-with-a-simple-post-install-script/1321345#1321345
 """
-
-__author__ = 'Kirill V. Belyayev'
-
-__copyright__ = "Copyright 2014, CIMA Systems"
-__license__ = "GPL"
 
 
 ### INCLUDES ###
@@ -30,7 +26,9 @@ import vmware_backup.file_system as fs
 
 
 ### CONSTANTS ###
-# SITE_PACKAGES = get_python_lib()
+## Meta Data ##
+__author__ = 'Kirill V. Belyayev'
+__license__ = 'GPL'
 
 
 ### FUNCTIONS ###
@@ -61,14 +59,16 @@ def non_python_files(path):
     all_results = []
     module_suffixes = [info[0] for info in imp.get_suffixes()]
     ignore_dirs = ['cvs']
-    for item in os.listdir(path):
-        name = os.path.join(path, item)
-        if os.path.isfile(name) and os.path.splitext(item)[1] not in module_suffixes:
-            result.append(name)
-        elif os.path.isdir(name) and item.lower() not in ignore_dirs:
-            all_results.extend(non_python_files(name))
-    if result:
-        all_results.append((path, result))
+    if os.path.isdir(path):
+        for item in os.listdir(path):
+            name = os.path.join(path, item)
+            if os.path.isfile(name) and os.path.splitext(item)[1] not in module_suffixes:
+                result.append(name)
+            elif os.path.isdir(name) and item.lower() not in ignore_dirs:
+                all_results.extend(non_python_files(name))
+        if result:
+            all_results.append((path, result))
+
     return all_results
 
 

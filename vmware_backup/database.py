@@ -1,7 +1,9 @@
 """
-Database classes that facilitate in storing/restoring python content in a form of
-dictionaries or lists on/from the hard drive.
-Make sure to provide plain data, no objects, classes or anything that might be hard to convert to a string
+Database Classes
+Classes that save/load python content to/from the hard drive(or other means of non-volatile memory).
+Make sure to provide pickle-able data, no objects, classes or anything that might be hard to convert to a string
+Please do not use DatabaseEntry directly, nor DatabaseDictBase. Those are exposed for overloading purposes.
+Use DatabaseList, DatabaseDict or DatabaseOrderedDict!
 """
 
 __author__ = 'Kirill V. Belyayev'
@@ -11,17 +13,28 @@ __license__ = "GPL"
 
 
 ### INCLUDES ###
+import os
 import copy
+import logging
 
 import file_system as fs
 from ordered_dict import OrderedDict
 
 
+### CONSTANTS ###
+## Logger ##
+LOGGER = logging.getLogger(__name__)
+# LOGGER.setLevel(logging.DEBUG)
+
+
 ### CLASSES ###
-class _DatabaseEntry(object):
-    """ Database Entry Base Class """
-    def __init__(self, main, db_file=None, defaults=None):
-        self._main = main
+## Base Database Class ##
+class DatabaseEntry(object):
+    """ DatabaseEntry class """
+    def __init__(self, entry_data_type, db_file=None, defaults=None, auto_load=True):
+        super(DatabaseEntry, self).__init__()
+
+        self._main = entry_data_type()
         self._db_file = db_file
         self._defaults = defaults
         self.load()
@@ -36,21 +49,27 @@ class _DatabaseEntry(object):
     def _load(self):
         """ Internal Load - loads main from a file if it exists """
         db_main = None
-        if self._db_file:
+        if self._db_file is not None:
+            # LOGGER.debug('Loading db_file: ' + str(self._db_file))
             database_data = fs.unpickle_file(self._db_file)
-            if database_data:
+
+            if database_data is not False:
                 db_main = database_data
 
-        if self._defaults and db_main is None:
+        if self._defaults is not None and db_main is None:
             db_main = self._load_default()
 
         return db_main
 
     def _load_default(self):
         """ Loads main with defaults """
+        # LOGGER.debug("type(defaults) = " + str(type(self._defaults)))
+
         if type(self._defaults) is type(self._main):
+            # LOGGER.debug("Deep Copy")
             defaults = copy.deepcopy(self._defaults)
         else:
+            # LOGGER.error("Defaults type: " + str(type(self._defaults)) + " is not supported!")
             defaults = None
 
         return defaults
@@ -61,19 +80,19 @@ class _DatabaseEntry(object):
         if db_content is None:
             db_content = self._main
 
-        if self._db_file:
-            if '/' in self._db_file:
-                db_list = self._db_file.split('/')
-                db_name = db_list.pop(-1)
-                db_path = '/'.join(db_list)
-                fs.make_dir(db_path)
+        if self._db_file is not None:
+            if os.sep in self._db_file:
+                sub_folders_path = os.path.dirname(self._db_file)
+                fs.make_dir(sub_folders_path)
 
+            # LOGGER.debug('Saving db_file: ' + str(self._db_file))
             fs.pickle_file(self._db_file, db_content)
 
     ## Delete Methods ##
     def delete(self):
         """ Deletes database file """
-        fs.remove_file(self._db_file)
+        if self._db_file is not None:
+            fs.remove_file(self._db_file)
 
     ## Generic Macros ##
     def __iter__(self):
@@ -108,8 +127,14 @@ class _DatabaseEntry(object):
         return self._main.pop(index)
 
 
-class _DatabaseListBase(_DatabaseEntry):
-    """ Some List Specific Methods """
+## List, Dict and OrderedDict Database Classes ##
+class DatabaseList(DatabaseEntry):
+    """ DatabaseList class """
+    def __init__(self, **kwargs):
+        """ Load database entry """
+        super(DatabaseList, self).__init__(list, **kwargs)
+
+    ## Some List Specific Methods ##
     def append(self, value):
         """ Allows using append method """
         self._main.append(value)
@@ -123,7 +148,7 @@ class _DatabaseListBase(_DatabaseEntry):
         self._main.insert(index, value)
 
 
-class _DatabaseDictBase(_DatabaseEntry):
+class DatabaseDictBase(DatabaseEntry):
     """ Some Dictionary Specific Methods """
     def update(self, value):
         """ Allows using update method """
@@ -141,24 +166,28 @@ class _DatabaseDictBase(_DatabaseEntry):
         """ Allows using keys method """
         return self._main.keys()
 
-
-class DatabaseList(_DatabaseListBase):
-    """ DatabaseList class """
-
-    def __init__(self, **kwargs):
-        """ Load database entry """
-        super(DatabaseList, self).__init__([], **kwargs)
+    def clear(self):
+        """ Allows using clear method """
+        return self._main.clear()
 
 
-class DatabaseDict(_DatabaseDictBase):
+class DatabaseDict(DatabaseDictBase):
     """ DatabaseDict class """
     def __init__(self, **kwargs):
         """ Load database entry """
-        super(DatabaseDict, self).__init__({}, **kwargs)
+        super(DatabaseDict, self).__init__(dict, **kwargs)
 
 
-class DatabaseOrderedDict(_DatabaseDictBase):
+class DatabaseOrderedDict(DatabaseDictBase):
     """ DatabaseOrderedDict class """
     def __init__(self, **kwargs):
         """ Load database entry """
-        super(DatabaseOrderedDict, self).__init__(OrderedDict(), **kwargs)
+        super(DatabaseOrderedDict, self).__init__(OrderedDict, **kwargs)
+
+    def insert_after(self, existing_key, key_value):
+        """ Allows using insert_after method """
+        self._main.insert_after(existing_key, key_value)
+
+    def insert_before(self, existing_key, key_value):
+        """ Allows using insert_before method """
+        self._main.insert_before(existing_key, key_value)

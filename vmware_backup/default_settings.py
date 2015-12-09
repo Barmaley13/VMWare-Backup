@@ -29,7 +29,3 @@ DEFAULT_SETTINGS['log_ts_format'] = '%Y-%m-%d %H:%M:%S'
 # Time Stamp Option 2: Do not allow user to change time stamps
 FOLDER_TS_FORMAT = '-%Y%m%d'
 LOG_TS_FORMAT = '%Y-%m-%d %H:%M:%S'
-
-## Multiple Attempt Settings ##
-ATTEMPT_NUMBER = 10
-ATTEMPT_TIMEOUT = 10        # seconds

@@ -1,6 +1,6 @@
 """
 Collection of decorators to make our life a little easier
-Based on a recipe from here:
+Simple Decorator is based on a recipe from here:
 https://wiki.python.org/moin/PythonDecoratorLibrary
 """
 
@@ -13,7 +13,11 @@ __license__ = "GPL"
 ### INCLUDES ###
 import time
 
-from default_settings import ATTEMPT_NUMBER, ATTEMPT_TIMEOUT
+
+### CONSTANTS ###
+## Multiple Attempt Settings ##
+ATTEMPT_NUMBER = 10
+ATTEMPT_TIMEOUT = 10        # seconds
 
 
 ### FUNCTIONS ###

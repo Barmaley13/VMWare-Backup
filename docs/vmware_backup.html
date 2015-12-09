@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>vmware_backup package &mdash; VMWare Backup 1.02.01 documentation</title>
+    <title>vmware_backup package &mdash; VMWare Backup 1.02.03 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.02.01',
+        VERSION:     '1.02.03',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="VMWare Backup 1.02.01 documentation" href="index.html" />
+    <link rel="top" title="VMWare Backup 1.02.03 documentation" href="index.html" />
     <link rel="up" title="vmware_backup" href="modules.html" />
     <link rel="prev" title="vmware_backup" href="modules.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="modules.html" title="vmware_backup"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.02.01 documentation</a> &raquo;</li>
+        <li><a href="index.html">VMWare Backup 1.02.03 documentation</a> &raquo;</li>
           <li><a href="modules.html" accesskey="U">vmware_backup</a> &raquo;</li> 
       </ul>
     </div>  
@@ -73,35 +73,135 @@
 </div>
 <div class="section" id="module-vmware_backup.database">
 <span id="vmware-backup-database-module"></span><h2>vmware_backup.database module<a class="headerlink" href="#module-vmware_backup.database" title="Permalink to this headline">¶</a></h2>
-<p>Database classes that facilitate in storing/restoring python content in a form of
-dictionaries or lists on/from the hard drive.
-Make sure to provide plain data, no objects, classes or anything that might be hard to convert to a string</p>
+<p>Database Classes
+Classes that save/load python content to/from the hard drive(or other means of non-volatile memory).
+Make sure to provide pickle-able data, no objects, classes or anything that might be hard to convert to a string
+Please do not use DatabaseEntry directly, nor DatabaseDictBase. Those are exposed for overloading purposes.
+Use DatabaseList, DatabaseDict or DatabaseOrderedDict!</p>
 <dl class="class">
 <dt id="vmware_backup.database.DatabaseDict">
 <em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseDict</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database._DatabaseDictBase</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="#vmware_backup.database.DatabaseDictBase" title="vmware_backup.database.DatabaseDictBase"><tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database.DatabaseDictBase</span></tt></a></p>
 <p>DatabaseDict class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware_backup.database.DatabaseDictBase">
+<em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseDictBase</tt><big>(</big><em>entry_data_type</em>, <em>db_file=None</em>, <em>defaults=None</em>, <em>auto_load=True</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vmware_backup.database.DatabaseEntry" title="vmware_backup.database.DatabaseEntry"><tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database.DatabaseEntry</span></tt></a></p>
+<p>Some Dictionary Specific Methods</p>
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseDictBase.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using clear method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseDictBase.items">
+<tt class="descname">items</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using items method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseDictBase.keys">
+<tt class="descname">keys</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using keys method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseDictBase.update">
+<tt class="descname">update</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using update method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseDictBase.values">
+<tt class="descname">values</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using values method</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="vmware_backup.database.DatabaseEntry">
+<em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseEntry</tt><big>(</big><em>entry_data_type</em>, <em>db_file=None</em>, <em>defaults=None</em>, <em>auto_load=True</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></a></p>
+<p>DatabaseEntry class</p>
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseEntry.delete">
+<tt class="descname">delete</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes database file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseEntry.load">
+<tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>External Load</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseEntry.pop">
+<tt class="descname">pop</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using pop method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseEntry.save">
+<tt class="descname">save</tt><big>(</big><em>db_content=None</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves main to a file</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="vmware_backup.database.DatabaseList">
 <em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseList</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database._DatabaseListBase</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="#vmware_backup.database.DatabaseEntry" title="vmware_backup.database.DatabaseEntry"><tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database.DatabaseEntry</span></tt></a></p>
 <p>DatabaseList class</p>
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseList.append">
+<tt class="descname">append</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseList.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using append method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseList.extend">
+<tt class="descname">extend</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseList.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using extend method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseList.insert">
+<tt class="descname">insert</tt><big>(</big><em>index</em>, <em>value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseList.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using insert method</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="vmware_backup.database.DatabaseOrderedDict">
 <em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseOrderedDict</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseOrderedDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database._DatabaseDictBase</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="#vmware_backup.database.DatabaseDictBase" title="vmware_backup.database.DatabaseDictBase"><tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database.DatabaseDictBase</span></tt></a></p>
 <p>DatabaseOrderedDict class</p>
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseOrderedDict.insert_after">
+<tt class="descname">insert_after</tt><big>(</big><em>existing_key</em>, <em>key_value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseOrderedDict.insert_after" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using insert_after method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.database.DatabaseOrderedDict.insert_before">
+<tt class="descname">insert_before</tt><big>(</big><em>existing_key</em>, <em>key_value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseOrderedDict.insert_before" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows using insert_before method</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
 <div class="section" id="module-vmware_backup.decorators">
 <span id="vmware-backup-decorators-module"></span><h2>vmware_backup.decorators module<a class="headerlink" href="#module-vmware_backup.decorators" title="Permalink to this headline">¶</a></h2>
 <p>Collection of decorators to make our life a little easier
-Based on a recipe from here:
+Simple Decorator is based on a recipe from here:
 <a class="reference external" href="https://wiki.python.org/moin/PythonDecoratorLibrary">https://wiki.python.org/moin/PythonDecoratorLibrary</a></p>
 <dl class="function">
 <dt id="vmware_backup.decorators.multiple_attempts">
@@ -138,14 +238,33 @@ it is applied.</p>
 
 <dl class="function">
 <dt id="vmware_backup.file_system.copy_file">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">copy_file</tt><big>(</big><em>source_file</em>, <em>destination_file</em>, <em>permissions=None</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.copy_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Permissions won&#8217;t work on windows os. Only linux based systems</p>
+<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">copy_file</tt><big>(</big><em>source_file</em>, <em>destination_file</em>, <em>permissions=None</em>, <em>dos2unix=True</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.copy_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copying File
+:param source_file: Source File Path
+:param destination_file: Destination File Path
+:param permissions: Permissions string (for unix only)
+:param dos2unix: Conversion to unix format (for unix only)
+:return: True if copying is successful, False otherwise</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="vmware_backup.file_system.create_time_stamp">
 <tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">create_time_stamp</tt><big>(</big><em>time_stamp_format</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.create_time_stamp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="vmware_backup.file_system.empty_dir">
+<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">empty_dir</tt><big>(</big><em>dir_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.empty_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Empty directory
+:param dir_path: Path of the directory
+:return: True if empty successful (such directory existed in the first place), False otherwise</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="vmware_backup.file_system.fetch_file">
+<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">fetch_file</tt><big>(</big><em>file_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.fetch_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches files, specified by path/filter</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="vmware_backup.file_system.get_free_space">
@@ -165,7 +284,9 @@ Taken from here, slightly modified:
 <dl class="function">
 <dt id="vmware_backup.file_system.make_dir">
 <tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">make_dir</tt><big>(</big><em>dir_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.make_dir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creating directory</p>
+<dd><p>Creating directory
+:param dir_path: Path of the new directory
+:return: True if folder has been created, False if folder exists already</p>
 </dd></dl>
 
 <dl class="function">
@@ -190,12 +311,21 @@ Taken from here, slightly modified:
 <dl class="function">
 <dt id="vmware_backup.file_system.remove_dir">
 <tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">remove_dir</tt><big>(</big><em>dir_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.remove_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Removing directory
+:param dir_path: Path of the directory
+:return: True if remove successful (such directory existed in the first place), False otherwise</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="vmware_backup.file_system.remove_file">
 <tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">remove_file</tt><big>(</big><em>file_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.remove_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="vmware_backup.file_system.remove_files">
+<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">remove_files</tt><big>(</big><em>files_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.remove_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes files, specified by path/filter</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="vmware_backup.file_system.unpickle_file">
@@ -450,7 +580,7 @@ VMWare Command Line
         <li class="right" >
           <a href="modules.html" title="vmware_backup"
              >previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.02.01 documentation</a> &raquo;</li>
+        <li><a href="index.html">VMWare Backup 1.02.03 documentation</a> &raquo;</li>
           <li><a href="modules.html" >vmware_backup</a> &raquo;</li> 
       </ul>
     </div>

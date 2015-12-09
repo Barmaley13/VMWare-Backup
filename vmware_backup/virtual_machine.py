@@ -210,8 +210,10 @@ class VirtualMachine(object):
 
         return kwargs
 
+    ## VMWare Backup Method ##
     def backup(self):
         """ Execute backup of this virtual machine """
+
         # Print some basic info about this Virtual Machine
         self._print('VM Name: ' + self.name)
         self._print('VM Path: ' + self.path)
