@@ -2,11 +2,6 @@
 Cron related functions
 """
 
-__author__ = 'Kirill V. Belyayev'
-
-__copyright__ = "Copyright 2014, CIMA Systems"
-__license__ = "GPL"
-
 
 ### INCLUDES ###
 import os
@@ -15,6 +10,11 @@ from crontab import CronTab
 
 
 ### CONSTANTS ###
+## Meta Data ##
+__author__ = 'Kirill V. Belyayev'
+__license__ = 'GPL'
+
+## Cron Constants ##
 # TODO: Rewrite crontab so it works on Windows as well!
 if os.name == 'posix':
     CRON = CronTab()

@@ -2,24 +2,36 @@
 Default Backup Settings
 """
 
-__author__ = 'Kirill V. Belyayev'
-
-__copyright__ = "Copyright 2014, CIMA Systems"
-__license__ = "GPL"
-
 
 ### INCLUDES ###
-from ordered_dict import OrderedDict
+import os
+import string
+
+from py_knife.ordered_dict import OrderedDict
 
 
 ### CONSTANTS ###
+## Meta Data ##
+__author__ = 'Kirill V. Belyayev'
+__license__ = 'GPL'
+
 ## Default Backup Settings ##
-# TODO: Add different settings for different Operating Systems
+# TODO: Add 'MUTLIPLE_TAPE_SYSTEM' to parser
 DEFAULT_SETTINGS = OrderedDict()
 DEFAULT_SETTINGS['crone_schedule'] = '0 22 * * 1-5'
 DEFAULT_SETTINGS['vmrun_path'] = 'vmrun'
-DEFAULT_SETTINGS['vms_path'] = '~/vmware'
-DEFAULT_SETTINGS['tape_path'] = '/media/lto6'
+DEFAULT_SETTINGS['vms_path'] = os.path.join(os.path.expanduser('~'), 'vmware')
+
+if os.name == 'nt':
+    # Guessing backup media
+    available_drives = ['%s:' % d for d in string.ascii_uppercase if os.path.exists('%s:' % d)]
+    DEFAULT_SETTINGS['tape_path'] = os.path.abspath(available_drives[-1])
+    MUTLIPLE_TAPE_SYSTEM = False
+else:
+    # FIXME: Would this work on MAC?
+    DEFAULT_SETTINGS['tape_path'] = os.path.join(os.path.abspath(os.sep), 'media', 'lto6')
+    MUTLIPLE_TAPE_SYSTEM = True
+
 DEFAULT_SETTINGS['_backup_ts'] = ''
 
 # Time Stamp Option 1: Allow user to change time stamps (Comment those out for Option 2)

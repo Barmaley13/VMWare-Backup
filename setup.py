@@ -17,12 +17,11 @@ import shutil
 import glob
 
 from distutils.core import setup
-# from distutils.sysconfig import get_python_lib
-from distutils.command.install_data import install_data
 from distutils.command.install import install
 
+from py_knife import file_system
+
 from vmware_backup import __version__
-import vmware_backup.file_system as fs
 
 
 ### CONSTANTS ###
@@ -103,14 +102,16 @@ def _generate_docs(doc_packages):
 
     # Moving images to appropriate folder
     images = glob.glob('*.png')
-    fs.make_dir('_docs/images/')
-    for image in images:
-        shutil.move(image, '_docs/images/' + image.split('/')[-1])
+    destination_path = os.path.join('_docs', 'images')
+    file_system.make_dir(destination_path)
+    for image_path in images:
+        image_name = os.path.basename(image_path)
+        shutil.move(image_path, os.path.join(destination_path, image_name))
     # Updating automatically generated rst files
     print 'sphinx-apidoc -f -o _docs vmware_backup'
     os.system('sphinx-apidoc -f -o _docs vmware_backup')
     # Rebuilding documentation in html format
-    fs.remove_dir('docs')
+    file_system.remove_dir('docs')
     print 'sphinx-build -b html _docs docs'
     os.system('sphinx-build -b html _docs docs')
 
@@ -125,19 +126,12 @@ def _post_install():
     """ Post install procedures """
     pass
     # print "*** Creating folders and generating files for user data ***"
-    # HOME = os.path.expanduser('~')
-    # shutil.copy('run_backup.py', HOME)
+    # user_script_path = os.path.join(os.path.expanduser('~'), 'VMWare-Backup')
+    # file_system.make_dir(user_script_path)
+    # shutil.copy('run_backup.py', user_script_path)
 
 
 ### CLASSES ###
-class MyInstallData(install_data):
-    def run(self):
-        # need to change self.install_dir to the library dir
-        install_cmd = self.get_finalized_command('install')
-        self.install_dir = getattr(install_cmd, 'install_lib')
-        return install_data.run(self)
-
-
 class MyInstall(install):
     def run(self):
         """ Modified install procedure """
@@ -184,9 +178,10 @@ setup(
     package_data=package_data,
     data_files=data_files,
     scripts=['run_backup.py'],
-    cmdclass={'install_data': MyInstallData, 'install': MyInstall},
+    cmdclass={'install': MyInstall},
     requires=[
         # Anything else?
-        'crontab'
+        'crontab',
+        'py_knife'
     ]
 )

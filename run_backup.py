@@ -3,26 +3,32 @@
 Main Backup Script
 """
 
-__author__ = 'Kirill V. Belyayev'
-
 
 ### INCLUDES ###
 import os
 import sys
 import commands
-import platform
+# import platform
 import optparse
 import glob
 
-from vmware_backup import DEFAULT_SETTINGS, FOLDER_TS_FORMAT
-from vmware_backup import create_time_stamp, make_dir, execute_backup, enable_backup, disable_backup
-from vmware_backup import OrderedDict, DatabaseOrderedDict, Logger
+from py_knife import file_system
+from py_knife.ordered_dict import OrderedDict
+from py_knife.database import DatabaseOrderedDict
+from py_knife.logger import Logger
+
+from vmware_backup import DEFAULT_SETTINGS, FOLDER_TS_FORMAT, MUTLIPLE_TAPE_SYSTEM
+from vmware_backup import execute_backup, enable_backup, disable_backup
 
 
 ### CONSTANTS ###
-CWD = sys.path[0]
+## Meta Data ##
+__author__ = 'Kirill V. Belyayev'
+__license__ = 'GPL'
 
-BACKUP_COMMAND = 'python ' + CWD + '/run_backup.py -b'
+## Module Constants ##
+CWD = sys.path[0]
+BACKUP_COMMAND = 'python ' + os.path.join(CWD, 'run_backup.py') + ' -b'
 
 
 ### FUNCTIONS ###
@@ -105,7 +111,7 @@ def validate_settings(current_settings, new_settings=None):
 
             if '_path' in _settings_key:
                 # Validate path options, strip forward slashes if needed
-                _settings_value = _settings_value.rstrip('/')
+                _settings_value = _settings_value.rstrip(os.sep)
                 if _settings_key == 'vmrun_path':
                     vmrun_test_list = commands.getoutput(_settings_value).split('\n')
                     for vmrun_test_line in vmrun_test_list:
@@ -117,12 +123,15 @@ def validate_settings(current_settings, new_settings=None):
                         output = False
 
                 else:
-                    # TODO: Add support for single tape system
-                    if os.path.isdir(_settings_value) and len(glob.glob(_settings_value + '/*')):
+                    validate = True
+                    validate &= os.path.isdir(_settings_value)
+                    if _settings_key != 'tape_path' or MUTLIPLE_TAPE_SYSTEM:
+                        validate &= len(glob.glob(os.path.join(_settings_value, '*')))
+
+                    if validate:
                         current_settings[_settings_key] = _settings_value
-                        output = True
-                    else:
-                        output = False
+
+                    output = validate
 
             elif '_ts_format' in _settings_key:
                 if new_settings is not None:
@@ -199,7 +208,7 @@ def _getattr(test_object, attr_name):
 if __name__ == '__main__':
     # Load/Create Settings
     # print '*** Loading Backup Settings ***'
-    settings_path = CWD + '/backup_settings.db'
+    settings_path = os.path.join(CWD, 'backup_settings.db')
     backup_settings = DatabaseOrderedDict(db_file=settings_path, defaults=DEFAULT_SETTINGS)
 
     # Fetch User Options
@@ -210,22 +219,22 @@ if __name__ == '__main__':
     if input_options.back_up:
         # Create current backup time stamp
         if allow_ts_mods:
-            backup_settings['_backup_ts'] = create_time_stamp(backup_settings['folder_ts_format'])
+            backup_settings['_backup_ts'] = file_system.create_time_stamp(backup_settings['folder_ts_format'])
         else:
-            backup_settings['_backup_ts'] = create_time_stamp(FOLDER_TS_FORMAT)
+            backup_settings['_backup_ts'] = file_system.create_time_stamp(FOLDER_TS_FORMAT)
 
         # Create Logs
-        make_dir(CWD + '/logs')
-        log_file = CWD + '/logs/backup' + backup_settings['_backup_ts']
-        sys.stdout = Logger(log_file)
+        logs_folder_path = os.path.join(CWD, 'logs')
+        file_system.make_dir(logs_folder_path)
+        log_file_path = os.path.join(logs_folder_path, 'backup' + backup_settings['_backup_ts'])
+        sys.stdout = Logger(log_file_path)
 
     # Check operating system
     # TODO: Test on Windows and/or MAC, make sure its working properly!
-    # Probably need to change '/' to '\\' and etc for different platforms
-    if os.name != 'posix':
-        os_type = platform.system()
-        print 'Operating System "' + str(os_type) + '" is not supported!'
-        sys.exit()
+    # if os.name != 'posix':
+    #     os_type = platform.system()
+    #     print 'Operating System "' + str(os_type) + '" is not supported!'
+    #     sys.exit()
 
     if validate_settings(backup_settings, input_options):
         print '*** Saving New Backup Settings ***'

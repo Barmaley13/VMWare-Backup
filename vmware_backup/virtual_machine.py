@@ -2,29 +2,30 @@
 Virtual Machine Class
 """
 
-__author__ = 'Kirill V. Belyayev'
-
-__copyright__ = "Copyright 2014, CIMA Systems"
-__license__ = "GPL"
-
 
 ### INCLUDES ###
 import os
 import sys
 import commands
 import glob
-import time
 
-import file_system as fs
-from default_settings import LOG_TS_FORMAT
-from decorators import multiple_attempts
+from py_knife import file_system
+from py_knife.decorators import multiple_attempts
+
+from default_settings import LOG_TS_FORMAT, MUTLIPLE_TAPE_SYSTEM
+
+
+### CONSTANTS ###
+## Meta Data ##
+__author__ = 'Kirill V. Belyayev'
+__license__ = 'GPL'
 
 
 ### FUNCTIONS ###
 def execute_backup(settings):
     """ Backup Machines """
     vm_list = []
-    vm_path_list = glob.glob(settings['vms_path'] + '/*')
+    vm_path_list = glob.glob(os.path.join(settings['vms_path'], '*'))
     for vm_path in vm_path_list:
         vm_list.append(VirtualMachine(settings, vm_path))
 
@@ -38,7 +39,7 @@ class VirtualMachine(object):
     def __init__(self, settings, vm_path):
         self.settings = settings
         self.path = vm_path
-        self.name = vm_path.split('/')[-1]
+        self.name = os.path.basename(vm_path)
         self.vmware = None
         self.base_backup_path = None
         self.vm_backup_path = None
@@ -47,9 +48,9 @@ class VirtualMachine(object):
     def _print(self, message):
         # Time Stamp Options 1 and 2
         if 'log_ts_format' in self.settings:
-            print fs.create_time_stamp(self.settings['log_ts_format']), str(message)
+            print file_system.create_time_stamp(self.settings['log_ts_format']), str(message)
         else:
-            print fs.create_time_stamp(LOG_TS_FORMAT), str(message)
+            print file_system.create_time_stamp(LOG_TS_FORMAT), str(message)
 
     def _exit(self, message):
         self._print(message)
@@ -69,7 +70,7 @@ class VirtualMachine(object):
 
         vm_dict = {}
         for vm_path in vm_list:
-            vm_name = vm_path.split('/')[-2]
+            vm_name = os.path.basename(os.path.dirname(vm_path))
             vm_dict[vm_name] = vm_path
 
         vmware_path = None
@@ -127,36 +128,39 @@ class VirtualMachine(object):
             self._resume()
 
     ## Tape Methods ##
-    def _space_available(self, tape, **kwargs):
+    def _space_available(self, tape):
         """ Reads available space on particular tape """
-        space_available = fs.get_free_space(tape)
-        tape_name = str(tape.split('/')[-1])
-        self._print("Space available on tape '" + tape_name + "': " + fs.print_memory_size(space_available))
+        space_available = file_system.get_free_space(tape)
+        tape_name = str(os.path.basename(tape))
+        self._print("Space available on tape '" + tape_name + "': " + file_system.print_memory_size(space_available))
 
         return space_available
 
     def _fetch_base_path(self, space_needed):
         """ Figuring out what tape to use and generating path for the future backup location """
         tape_to_use = None
-        # TODO: Add support for single tape system
-        tape_list = glob.glob(self.settings['tape_path'] + '/*')
+        if MUTLIPLE_TAPE_SYSTEM:
+            tape_list = glob.glob(os.path.join(self.settings['tape_path'], '*'))
+        else:
+            tape_list = [self.settings['tape_path']]
+
         for tape in tape_list:
             # Figure out how much space we have on this tape
             space_available = self._space_available(tape)
 
             # Is it enough space?
             if space_available >= space_needed:
-                self._print('Space available: ' + fs.print_memory_size(space_available))
+                self._print('Space available: ' + file_system.print_memory_size(space_available))
                 tape_to_use = tape
                 break
         else:
             self._exit('Tapes are full or inaccessible! Please unmount tape drive, reload tapes,'
                        ' format all of them and remount tape drive!')
 
-        vm_base_name = self.settings['vms_path'].split('/')[-1]
+        vm_base_name = os.path.basename(self.settings['vms_path'])
         vm_backup_name = vm_base_name + self.settings['_backup_ts']
 
-        return tape_to_use + '/' + vm_backup_name
+        return os.path.join(tape_to_use, vm_backup_name)
 
     @multiple_attempts
     def _creating_backup_folder(self, **kwargs):
@@ -167,7 +171,7 @@ class VirtualMachine(object):
             total_attempts = str(kwargs['total_attempts'])
             try:
                 self._print('Creating backup folder... (attempt #' + total_attempts + ')')
-                fs.make_dir(self.vm_backup_path)
+                file_system.make_dir(self.vm_backup_path)
 
             except OSError as e:
                 self._print('Could not create folder "' + self.vm_backup_path +
@@ -176,8 +180,8 @@ class VirtualMachine(object):
                 self._print('Could not create folder "' + self.vm_backup_path +
                             '" due to an IO error ({0}): {1}'.format(e.errno, e.strerror))
             except:
-                self._print('Could not create folder "' + self.vm_backup_path + '" due to an error: '
-                            + str(sys.exc_info()[0]))
+                self._print('Could not create folder "' + self.vm_backup_path + '" due to an error: ' +
+                            str(sys.exc_info()[0]))
             else:
                 self._print('Backup folder is successfully created!')
 
@@ -193,7 +197,7 @@ class VirtualMachine(object):
 
         try:
             self._print('Starting Backup... (attempt #' + total_attempts + ')')
-            fs.copy_dir(self.path, self.vm_backup_path)
+            file_system.copy_dir(self.path, self.vm_backup_path)
 
         except OSError as e:
             self._print('Could not backup "' + self.name +
@@ -202,8 +206,8 @@ class VirtualMachine(object):
             self._print('Could not backup "' + self.name +
                         '" virtual machine due to an IO error ({0}): {1}'.format(e.errno, e.strerror))
         except:
-            self._print('Could not backup "' + self.name + '" virtual machine due to an error: '
-                        + str(sys.exc_info()[0]))
+            self._print('Could not backup "' + self.name + '" virtual machine due to an error: ' +
+                        str(sys.exc_info()[0]))
         else:
             self._print('Backup Completed!')
             kwargs['success'] = True
@@ -226,12 +230,12 @@ class VirtualMachine(object):
         self.suspend()
 
         # Figure out how much space this Virtual Machine is taking up
-        space_needed = fs.get_size(self.path)
-        self._print('Space needed: ' + fs.print_memory_size(space_needed))
+        space_needed = file_system.get_size(self.path)
+        self._print('Space needed: ' + file_system.print_memory_size(space_needed))
 
         # Figure out what tape we will use to back up this Virtual Machine
         self.base_backup_path = self._fetch_base_path(space_needed)
-        self.vm_backup_path = self.base_backup_path + '/' + self.name
+        self.vm_backup_path = os.path.join(self.base_backup_path, self.name)
         self._print('BackUp Location: ' + str(self.vm_backup_path))
 
         # Creating backup folder

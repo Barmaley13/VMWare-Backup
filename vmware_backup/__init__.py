@@ -16,18 +16,15 @@ Linux Daemon (not needed?):
 http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
 """
 
-__author__ = 'Kirill V. Belyayev'
-__version__ = '1.02.04'
-
-__copyright__ = "Copyright 2014, CIMA Systems"
-__license__ = "GPL"
-
 
 ### EXTERNAL INCLUDES ###
-from .default_settings import DEFAULT_SETTINGS, FOLDER_TS_FORMAT
-from .file_system import create_time_stamp, make_dir
-from .ordered_dict import OrderedDict
-from .database import DatabaseOrderedDict
-from .logger import Logger
+from .default_settings import DEFAULT_SETTINGS, FOLDER_TS_FORMAT, MUTLIPLE_TAPE_SYSTEM
 from .virtual_machine import VirtualMachine, execute_backup
 from .cron import enable_backup, disable_backup
+
+
+### CONSTANTS ###
+## Meta Data##
+__version__ = '1.02.05'
+__author__ = 'Kirill V. Belyayev'
+__license__ = 'GPL'
