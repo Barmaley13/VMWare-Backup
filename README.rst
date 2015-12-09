@@ -59,7 +59,7 @@ any other backup configurations.
 In our experience, the tape drive has not been very fast or responsive compare to the hard drive. Therefore, we've
 introduce multiple attempts whenever we accessing the backup media. Also, each consecutive attempt is done with a
 delay that will hopefully give some time to the tape drive to respond to a certain action. The attempt number and delay
-period is set in ``default_settings.py`` file.
+period is part of the ``py_knife`` package, it is possible to monkey patch it.
 
 
 Installation
