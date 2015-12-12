@@ -214,6 +214,37 @@ class VirtualMachine(object):
 
         return kwargs
 
+    def backup_needed(self):
+        """ Determine if backup needed or not """
+        vmx_match = False
+        vmx_file = os.path.join(self.path, self.name + '.vmx')
+        for dir_path, dir_names, file_names in os.walk(self.settings['tape_path']):
+            for dir_name in dir_names:
+                if self.name in dir_name:
+                    # Compare *.vmx files (size and access date)
+                    vmx_files = glob.glob(os.path.join(dir_path, dir_name, self.name + '.vmx'))
+                    for _vmx_file in vmx_files:
+                        # Compare modified time stamps
+                        vmx_match = bool(os.path.getmtime(_vmx_file) == os.path.getmtime(vmx_file))
+                        # Compare file sizes
+                        vmx_match &= bool(file_system.get_size(_vmx_file) == file_system.get_size(vmx_files))
+
+                        if vmx_match:
+                            self._print("Virtual Machine '" + self.name + "' have been backed up already!")
+                            self._print('Backup Path: ' + str(_vmx_file))
+                            break
+
+                    else:
+                        continue
+                    break
+            else:
+                continue
+            break
+        else:
+            self._print("Virtual Machine '" + self.name + "' have not been backed up yet!")
+
+        return not vmx_match
+
     ## VMWare Backup Method ##
     def backup(self):
         """ Execute backup of this virtual machine """
@@ -226,25 +257,26 @@ class VirtualMachine(object):
         vm_state = self.state()
         self._print('VM Running: ' + str(vm_state))
 
-        # Suspend Virtual Machine (if needed)
-        self.suspend()
+        if self.backup_needed():
+            # Suspend Virtual Machine (if needed)
+            self.suspend()
 
-        # Figure out how much space this Virtual Machine is taking up
-        space_needed = file_system.get_size(self.path)
-        self._print('Space needed: ' + file_system.print_memory_size(space_needed))
+            # Figure out how much space this Virtual Machine is taking up
+            space_needed = file_system.get_size(self.path)
+            self._print('Space needed: ' + file_system.print_memory_size(space_needed))
 
-        # Figure out what tape we will use to back up this Virtual Machine
-        self.base_backup_path = self._fetch_base_path(space_needed)
-        self.vm_backup_path = os.path.join(self.base_backup_path, self.name)
-        self._print('BackUp Location: ' + str(self.vm_backup_path))
+            # Figure out what tape we will use to back up this Virtual Machine
+            self.base_backup_path = self._fetch_base_path(space_needed)
+            self.vm_backup_path = os.path.join(self.base_backup_path, self.name)
+            self._print('BackUp Location: ' + str(self.vm_backup_path))
 
-        # Creating backup folder
-        backup_folder_created = self._creating_backup_folder()
+            # Creating backup folder
+            backup_folder_created = self._creating_backup_folder()
 
-        if backup_folder_created:
-            # Backup this Virtual Machine
-            # TODO: Add some compression options and functions
-            self._backup()
+            if backup_folder_created:
+                # Backup this Virtual Machine
+                # TODO: Add some compression options and functions
+                self._backup()
 
-        # Resume Virtual Machine (if needed)
-        self.resume()
+            # Resume Virtual Machine (if needed)
+            self.resume()

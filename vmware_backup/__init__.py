@@ -25,6 +25,6 @@ from .cron import enable_backup, disable_backup
 
 ### CONSTANTS ###
 ## Meta Data##
-__version__ = '1.02.05'
+__version__ = '1.02.06'
 __author__ = 'Kirill V. Belyayev'
 __license__ = 'GPL'
