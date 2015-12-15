@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>vmware_backup package &mdash; VMWare Backup 1.02.03 documentation</title>
+    <title>vmware_backup package &mdash; VMWare Backup 1.02.09 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.02.03',
+        VERSION:     '1.02.09',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="VMWare Backup 1.02.03 documentation" href="index.html" />
+    <link rel="top" title="VMWare Backup 1.02.09 documentation" href="index.html" />
     <link rel="up" title="vmware_backup" href="modules.html" />
     <link rel="prev" title="vmware_backup" href="modules.html" /> 
   </head>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="modules.html" title="vmware_backup"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.02.03 documentation</a> &raquo;</li>
+        <li><a href="index.html">VMWare Backup 1.02.09 documentation</a> &raquo;</li>
           <li><a href="modules.html" accesskey="U">vmware_backup</a> &raquo;</li> 
       </ul>
     </div>  
@@ -71,397 +71,9 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-vmware_backup.database">
-<span id="vmware-backup-database-module"></span><h2>vmware_backup.database module<a class="headerlink" href="#module-vmware_backup.database" title="Permalink to this headline">¶</a></h2>
-<p>Database Classes
-Classes that save/load python content to/from the hard drive(or other means of non-volatile memory).
-Make sure to provide pickle-able data, no objects, classes or anything that might be hard to convert to a string
-Please do not use DatabaseEntry directly, nor DatabaseDictBase. Those are exposed for overloading purposes.
-Use DatabaseList, DatabaseDict or DatabaseOrderedDict!</p>
-<dl class="class">
-<dt id="vmware_backup.database.DatabaseDict">
-<em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseDict</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vmware_backup.database.DatabaseDictBase" title="vmware_backup.database.DatabaseDictBase"><tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database.DatabaseDictBase</span></tt></a></p>
-<p>DatabaseDict class</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="vmware_backup.database.DatabaseDictBase">
-<em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseDictBase</tt><big>(</big><em>entry_data_type</em>, <em>db_file=None</em>, <em>defaults=None</em>, <em>auto_load=True</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vmware_backup.database.DatabaseEntry" title="vmware_backup.database.DatabaseEntry"><tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database.DatabaseEntry</span></tt></a></p>
-<p>Some Dictionary Specific Methods</p>
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseDictBase.clear">
-<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.clear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using clear method</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseDictBase.items">
-<tt class="descname">items</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.items" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using items method</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseDictBase.keys">
-<tt class="descname">keys</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.keys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using keys method</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseDictBase.update">
-<tt class="descname">update</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using update method</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseDictBase.values">
-<tt class="descname">values</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseDictBase.values" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using values method</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="vmware_backup.database.DatabaseEntry">
-<em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseEntry</tt><big>(</big><em>entry_data_type</em>, <em>db_file=None</em>, <em>defaults=None</em>, <em>auto_load=True</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></a></p>
-<p>DatabaseEntry class</p>
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseEntry.delete">
-<tt class="descname">delete</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes database file</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseEntry.load">
-<tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>External Load</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseEntry.pop">
-<tt class="descname">pop</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry.pop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using pop method</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseEntry.save">
-<tt class="descname">save</tt><big>(</big><em>db_content=None</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseEntry.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves main to a file</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="vmware_backup.database.DatabaseList">
-<em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseList</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vmware_backup.database.DatabaseEntry" title="vmware_backup.database.DatabaseEntry"><tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database.DatabaseEntry</span></tt></a></p>
-<p>DatabaseList class</p>
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseList.append">
-<tt class="descname">append</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseList.append" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using append method</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseList.extend">
-<tt class="descname">extend</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseList.extend" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using extend method</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseList.insert">
-<tt class="descname">insert</tt><big>(</big><em>index</em>, <em>value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseList.insert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using insert method</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="vmware_backup.database.DatabaseOrderedDict">
-<em class="property">class </em><tt class="descclassname">vmware_backup.database.</tt><tt class="descname">DatabaseOrderedDict</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseOrderedDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vmware_backup.database.DatabaseDictBase" title="vmware_backup.database.DatabaseDictBase"><tt class="xref py py-class docutils literal"><span class="pre">vmware_backup.database.DatabaseDictBase</span></tt></a></p>
-<p>DatabaseOrderedDict class</p>
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseOrderedDict.insert_after">
-<tt class="descname">insert_after</tt><big>(</big><em>existing_key</em>, <em>key_value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseOrderedDict.insert_after" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using insert_after method</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.database.DatabaseOrderedDict.insert_before">
-<tt class="descname">insert_before</tt><big>(</big><em>existing_key</em>, <em>key_value</em><big>)</big><a class="headerlink" href="#vmware_backup.database.DatabaseOrderedDict.insert_before" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows using insert_before method</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-vmware_backup.decorators">
-<span id="vmware-backup-decorators-module"></span><h2>vmware_backup.decorators module<a class="headerlink" href="#module-vmware_backup.decorators" title="Permalink to this headline">¶</a></h2>
-<p>Collection of decorators to make our life a little easier
-Simple Decorator is based on a recipe from here:
-<a class="reference external" href="https://wiki.python.org/moin/PythonDecoratorLibrary">https://wiki.python.org/moin/PythonDecoratorLibrary</a></p>
-<dl class="function">
-<dt id="vmware_backup.decorators.multiple_attempts">
-<tt class="descclassname">vmware_backup.decorators.</tt><tt class="descname">multiple_attempts</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#vmware_backup.decorators.multiple_attempts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorator to perform multiple attempts</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.decorators.simple_decorator">
-<tt class="descclassname">vmware_backup.decorators.</tt><tt class="descname">simple_decorator</tt><big>(</big><em>decorator</em><big>)</big><a class="headerlink" href="#vmware_backup.decorators.simple_decorator" title="Permalink to this definition">¶</a></dt>
-<dd><p>This decorator can be used to turn simple functions
-into well-behaved decorators, so long as the decorators
-are fairly simple. If a decorator expects a function and
-returns a function (no descriptors), and if it doesn&#8217;t
-modify function attributes or docstring, then it is
-eligible to use this. Simply apply &#64;simple_decorator to
-your decorator and it will automatically preserve the
-docstring and function attributes of functions to which
-it is applied.</p>
-</dd></dl>
-
-</div>
 <div class="section" id="module-vmware_backup.default_settings">
 <span id="vmware-backup-default-settings-module"></span><h2>vmware_backup.default_settings module<a class="headerlink" href="#module-vmware_backup.default_settings" title="Permalink to this headline">¶</a></h2>
 <p>Default Backup Settings</p>
-</div>
-<div class="section" id="module-vmware_backup.file_system">
-<span id="vmware-backup-file-system-module"></span><h2>vmware_backup.file_system module<a class="headerlink" href="#module-vmware_backup.file_system" title="Permalink to this headline">¶</a></h2>
-<p>Collection of functions that help perform file system tasks such as moving, copying, removing files and folders.</p>
-<dl class="function">
-<dt id="vmware_backup.file_system.copy_dir">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">copy_dir</tt><big>(</big><em>source_path</em>, <em>destination_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.copy_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.copy_file">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">copy_file</tt><big>(</big><em>source_file</em>, <em>destination_file</em>, <em>permissions=None</em>, <em>dos2unix=True</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.copy_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copying File
-:param source_file: Source File Path
-:param destination_file: Destination File Path
-:param permissions: Permissions string (for unix only)
-:param dos2unix: Conversion to unix format (for unix only)
-:return: True if copying is successful, False otherwise</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.create_time_stamp">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">create_time_stamp</tt><big>(</big><em>time_stamp_format</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.create_time_stamp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.empty_dir">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">empty_dir</tt><big>(</big><em>dir_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.empty_dir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Empty directory
-:param dir_path: Path of the directory
-:return: True if empty successful (such directory existed in the first place), False otherwise</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.fetch_file">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">fetch_file</tt><big>(</big><em>file_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.fetch_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetches files, specified by path/filter</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.get_free_space">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">get_free_space</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.get_free_space" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return free space in bytes
-Taken from here, slightly modified:
-<a class="reference external" href="http://stackoverflow.com/questions/51658/cross-platform-space-remaining-on-volume-using-python">http://stackoverflow.com/questions/51658/cross-platform-space-remaining-on-volume-using-python</a></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.get_size">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">get_size</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.get_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Taken from here
-<a class="reference external" href="http://stackoverflow.com/questions/1392413/calculating-a-directory-size-using-python">http://stackoverflow.com/questions/1392413/calculating-a-directory-size-using-python</a></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.make_dir">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">make_dir</tt><big>(</big><em>dir_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.make_dir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creating directory
-:param dir_path: Path of the new directory
-:return: True if folder has been created, False if folder exists already</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.make_file">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">make_file</tt><big>(</big><em>file_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.make_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creating empty file</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.pickle_file">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">pickle_file</tt><big>(</big><em>file_path</em>, <em>data_to_pickle</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.pickle_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pickle file</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.print_memory_size">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">print_memory_size</tt><big>(</big><em>size</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.print_memory_size" title="Permalink to this definition">¶</a></dt>
-<dd><p>Taken from here
-<a class="reference external" href="http://stackoverflow.com/questions/1392413/calculating-a-directory-size-using-python">http://stackoverflow.com/questions/1392413/calculating-a-directory-size-using-python</a></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.remove_dir">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">remove_dir</tt><big>(</big><em>dir_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.remove_dir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removing directory
-:param dir_path: Path of the directory
-:return: True if remove successful (such directory existed in the first place), False otherwise</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.remove_file">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">remove_file</tt><big>(</big><em>file_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.remove_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.remove_files">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">remove_files</tt><big>(</big><em>files_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.remove_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes files, specified by path/filter</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="vmware_backup.file_system.unpickle_file">
-<tt class="descclassname">vmware_backup.file_system.</tt><tt class="descname">unpickle_file</tt><big>(</big><em>file_path</em><big>)</big><a class="headerlink" href="#vmware_backup.file_system.unpickle_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Unpickle file</p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-vmware_backup.logger">
-<span id="vmware-backup-logger-module"></span><h2>vmware_backup.logger module<a class="headerlink" href="#module-vmware_backup.logger" title="Permalink to this headline">¶</a></h2>
-<p>VMWare Backup Logger Class
-Logs backup process</p>
-<dl class="class">
-<dt id="vmware_backup.logger.Logger">
-<em class="property">class </em><tt class="descclassname">vmware_backup.logger.</tt><tt class="descname">Logger</tt><big>(</big><em>filename=None</em><big>)</big><a class="headerlink" href="#vmware_backup.logger.Logger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></a></p>
-<dl class="method">
-<dt id="vmware_backup.logger.Logger.write">
-<tt class="descname">write</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#vmware_backup.logger.Logger.write" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-vmware_backup.ordered_dict">
-<span id="vmware-backup-ordered-dict-module"></span><h2>vmware_backup.ordered_dict module<a class="headerlink" href="#module-vmware_backup.ordered_dict" title="Permalink to this headline">¶</a></h2>
-<p>OrderedDict Class with insert_after and insert_before methods
-Reference links:
-1. <a class="reference external" href="http://code.activestate.com/recipes/576693/">http://code.activestate.com/recipes/576693/</a>
-2. <a class="reference external" href="https://gist.github.com/jaredks/6276032">https://gist.github.com/jaredks/6276032</a></p>
-<dl class="class">
-<dt id="vmware_backup.ordered_dict.OrderedDict">
-<em class="property">class </em><tt class="descclassname">vmware_backup.ordered_dict.</tt><tt class="descname">OrderedDict</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></a></p>
-<p>Dictionary that remembers insertion order</p>
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.clear">
-<tt class="descname">clear</tt><big>(</big><big>)</big> &rarr; None.  Remove all items from od.<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.clear" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.copy">
-<tt class="descname">copy</tt><big>(</big><big>)</big> &rarr; a shallow copy of od<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.copy" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="vmware_backup.ordered_dict.OrderedDict.fromkeys">
-<em class="property">classmethod </em><tt class="descname">fromkeys</tt><big>(</big><em>S</em><span class="optional">[</span>, <em>v</em><span class="optional">]</span><big>)</big> &rarr; New ordered dictionary with keys from S<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.fromkeys" title="Permalink to this definition">¶</a></dt>
-<dd><p>and values equal to v (which defaults to None).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.insert_after">
-<tt class="descname">insert_after</tt><big>(</big><em>existing_key</em>, <em>key_value</em><big>)</big><a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.insert_after" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.insert_before">
-<tt class="descname">insert_before</tt><big>(</big><em>existing_key</em>, <em>key_value</em><big>)</big><a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.insert_before" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.items">
-<tt class="descname">items</tt><big>(</big><big>)</big> &rarr; list of (key, value) pairs in od<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.items" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.iteritems">
-<tt class="descname">iteritems</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.iteritems" title="Permalink to this definition">¶</a></dt>
-<dd><p>od.iteritems -&gt; an iterator over the (key, value) items in od</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.iterkeys">
-<tt class="descname">iterkeys</tt><big>(</big><big>)</big> &rarr; an iterator over the keys in od<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.iterkeys" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.itervalues">
-<tt class="descname">itervalues</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.itervalues" title="Permalink to this definition">¶</a></dt>
-<dd><p>od.itervalues -&gt; an iterator over the values in od</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.keys">
-<tt class="descname">keys</tt><big>(</big><big>)</big> &rarr; list of keys in od<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.keys" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.pop">
-<tt class="descname">pop</tt><big>(</big><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><big>)</big> &rarr; v, remove specified key and return the corresponding value.<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.pop" title="Permalink to this definition">¶</a></dt>
-<dd><p>If key is not found, d is returned if given, otherwise KeyError is raised.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.popitem">
-<tt class="descname">popitem</tt><big>(</big><big>)</big> &rarr; (k, v), return and remove a (key, value) pair.<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.popitem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pairs are returned in LIFO order if last is true or FIFO order if false.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.setdefault">
-<tt class="descname">setdefault</tt><big>(</big><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><big>)</big> &rarr; od.get(k,d), also set od[k]=d if k not in od<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.setdefault" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.update">
-<tt class="descname">update</tt><big>(</big><em>E</em>, <em>**F</em><big>)</big> &rarr; None.  Update od from dict/iterable E and F.<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>If E is a dict instance, does:           for k in E: od[k] = E[k]
-If E has a .keys() method, does:         for k in E.keys(): od[k] = E[k]
-Or if E is an iterable of items, does:   for k, v in E: od[k] = v
-In either case, this is followed by:     for k, v in F.items(): od[k] = v</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.values">
-<tt class="descname">values</tt><big>(</big><big>)</big> &rarr; list of values in od<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.values" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.viewitems">
-<tt class="descname">viewitems</tt><big>(</big><big>)</big> &rarr; a set-like object providing a view on od's items<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.viewitems" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.viewkeys">
-<tt class="descname">viewkeys</tt><big>(</big><big>)</big> &rarr; a set-like object providing a view on od's keys<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.viewkeys" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="vmware_backup.ordered_dict.OrderedDict.viewvalues">
-<tt class="descname">viewvalues</tt><big>(</big><big>)</big> &rarr; an object providing a view on od's values<a class="headerlink" href="#vmware_backup.ordered_dict.OrderedDict.viewvalues" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 </div>
 <div class="section" id="module-vmware_backup.virtual_machine">
 <span id="vmware-backup-virtual-machine-module"></span><h2>vmware_backup.virtual_machine module<a class="headerlink" href="#module-vmware_backup.virtual_machine" title="Permalink to this headline">¶</a></h2>
@@ -475,6 +87,12 @@ In either case, this is followed by:     for k, v in F.items(): od[k] = v</p>
 <dt id="vmware_backup.virtual_machine.VirtualMachine.backup">
 <tt class="descname">backup</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.virtual_machine.VirtualMachine.backup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute backup of this virtual machine</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="vmware_backup.virtual_machine.VirtualMachine.backup_needed">
+<tt class="descname">backup_needed</tt><big>(</big><big>)</big><a class="headerlink" href="#vmware_backup.virtual_machine.VirtualMachine.backup_needed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if backup needed or not</p>
 </dd></dl>
 
 <dl class="method">
@@ -531,12 +149,7 @@ VMWare Command Line
 <li><a class="reference internal" href="#">vmware_backup package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-vmware_backup.cron">vmware_backup.cron module</a></li>
-<li><a class="reference internal" href="#module-vmware_backup.database">vmware_backup.database module</a></li>
-<li><a class="reference internal" href="#module-vmware_backup.decorators">vmware_backup.decorators module</a></li>
 <li><a class="reference internal" href="#module-vmware_backup.default_settings">vmware_backup.default_settings module</a></li>
-<li><a class="reference internal" href="#module-vmware_backup.file_system">vmware_backup.file_system module</a></li>
-<li><a class="reference internal" href="#module-vmware_backup.logger">vmware_backup.logger module</a></li>
-<li><a class="reference internal" href="#module-vmware_backup.ordered_dict">vmware_backup.ordered_dict module</a></li>
 <li><a class="reference internal" href="#module-vmware_backup.virtual_machine">vmware_backup.virtual_machine module</a></li>
 <li><a class="reference internal" href="#module-vmware_backup">Module contents</a></li>
 </ul>
@@ -580,7 +193,7 @@ VMWare Command Line
         <li class="right" >
           <a href="modules.html" title="vmware_backup"
              >previous</a> |</li>
-        <li><a href="index.html">VMWare Backup 1.02.03 documentation</a> &raquo;</li>
+        <li><a href="index.html">VMWare Backup 1.02.09 documentation</a> &raquo;</li>
           <li><a href="modules.html" >vmware_backup</a> &raquo;</li> 
       </ul>
     </div>
