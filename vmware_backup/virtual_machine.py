@@ -225,9 +225,9 @@ class VirtualMachine(object):
                     vmx_files = glob.glob(os.path.join(dir_path, dir_name, self.name + '.vmx'))
                     for _vmx_file in vmx_files:
                         # Compare modified time stamps
-                        vmx_match = bool(os.path.getmtime(_vmx_file) == os.path.getmtime(vmx_file))
+                        vmx_match = bool(os.path.getatime(_vmx_file) == os.path.getatime(vmx_file))
                         # Compare file sizes
-                        vmx_match &= bool(file_system.get_size(_vmx_file) == file_system.get_size(vmx_files))
+                        vmx_match &= bool(os.path.getsize(_vmx_file) == os.path.getsize(vmx_file))
 
                         if vmx_match:
                             self._print("Virtual Machine '" + self.name + "' have been backed up already!")
