@@ -123,10 +123,9 @@ def validate_settings(current_settings, new_settings=None):
                         output = False
 
                 else:
-                    validate = True
-                    validate &= os.path.isdir(_settings_value)
+                    validate = os.path.isdir(_settings_value)
                     if _settings_key != 'tape_path' or MUTLIPLE_TAPE_SYSTEM:
-                        validate &= len(glob.glob(os.path.join(_settings_value, '*')))
+                        validate &= bool(len(glob.glob(os.path.join(_settings_value, '*'))) > 0)
 
                     if validate:
                         current_settings[_settings_key] = _settings_value
