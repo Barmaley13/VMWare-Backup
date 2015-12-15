@@ -8,6 +8,7 @@ import os
 import sys
 import commands
 import glob
+import filecmp
 
 from py_knife import file_system
 from py_knife.decorators import multiple_attempts
@@ -224,10 +225,8 @@ class VirtualMachine(object):
                     # Compare *.vmx files (size and access date)
                     vmx_files = glob.glob(os.path.join(dir_path, dir_name, self.name + '.vmx'))
                     for _vmx_file in vmx_files:
-                        # Compare modified time stamps
-                        vmx_match = bool(os.path.getatime(_vmx_file) == os.path.getatime(vmx_file))
-                        # Compare file sizes
-                        vmx_match &= bool(os.path.getsize(_vmx_file) == os.path.getsize(vmx_file))
+                        # Compare files
+                        vmx_match = filecmp.cmp(_vmx_file, vmx_file, True)
 
                         if vmx_match:
                             self._print("Virtual Machine '" + self.name + "' have been backed up already!")
