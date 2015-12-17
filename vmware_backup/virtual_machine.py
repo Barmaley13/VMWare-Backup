@@ -219,28 +219,35 @@ class VirtualMachine(object):
         """ Determine if backup needed or not """
         vmx_match = False
         vmx_file = os.path.join(self.path, self.name + '.vmx')
-        for dir_path, dir_names, file_names in os.walk(self.settings['tape_path']):
-            for dir_name in dir_names:
-                if self.name in dir_name:
-                    # Compare *.vmx files (size and access date)
-                    vmx_files = glob.glob(os.path.join(dir_path, dir_name, self.name + '.vmx'))
-                    for _vmx_file in vmx_files:
-                        # Compare files
-                        vmx_match = filecmp.cmp(_vmx_file, vmx_file, True)
+        if os.path.isfile(vmx_file):
+            for dir_path, dir_names, file_names in os.walk(self.settings['tape_path']):
+                for dir_name in dir_names:
+                    if self.name in dir_name:
+                        vm_path = os.path.join(dir_path, dir_name)
+                        # Compare *.vmx files (size and access date)
+                        vmx_files = glob.glob(os.path.join(vm_path, self.name + '.vmx'))
+                        for _vmx_file in vmx_files:
+                            # Compare files
+                            vmx_match = filecmp.cmp(_vmx_file, vmx_file, True)
 
-                        if vmx_match:
-                            self._print("Virtual Machine '" + self.name + "' have been backed up already!")
-                            self._print('Backup Path: ' + str(_vmx_file))
-                            break
+                            if vmx_match:
+                                self._print("Virtual Machine '" + self.name + "' have been backed up already!")
+                                self._print('Backup Path: ' + str(vm_path))
+                                break
 
-                    else:
-                        continue
-                    break
+                        else:
+                            continue
+                        break
+                else:
+                    continue
+                break
             else:
-                continue
-            break
+                self._print("Virtual Machine '" + self.name + "' have not been backed up yet!")
+
         else:
-            self._print("Virtual Machine '" + self.name + "' have not been backed up yet!")
+            vmx_match = True
+            self._print("Virtual Machine '" + self.name + "' does not have '" + self.name + ".vmx' file!"
+                                                                                            " Skipping backup!")
 
         return not vmx_match
 
