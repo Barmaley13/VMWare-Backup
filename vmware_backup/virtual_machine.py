@@ -218,23 +218,29 @@ class VirtualMachine(object):
     def backup_needed(self):
         """ Determine if backup needed or not """
         vmx_match = False
-        vmx_file = os.path.join(self.path, self.name + '.vmx')
-        if os.path.isfile(vmx_file):
+
+        vmx_files = glob.glob(os.path.join(self.path, '*.vmx'))
+        if len(vmx_files) > 0:
             for dir_path, dir_names, file_names in os.walk(self.settings['tape_path']):
                 for dir_name in dir_names:
                     if self.name in dir_name:
                         vm_path = os.path.join(dir_path, dir_name)
                         # Compare *.vmx files (size and access date)
-                        vmx_files = glob.glob(os.path.join(vm_path, self.name + '.vmx'))
-                        for _vmx_file in vmx_files:
-                            # Compare files
-                            vmx_match = filecmp.cmp(_vmx_file, vmx_file, True)
+                        _vmx_files = glob.glob(os.path.join(vm_path, '*.vmx'))
 
-                            if vmx_match:
-                                self._print("Virtual Machine '" + self.name + "' have been backed up already!")
-                                self._print('Backup Path: ' + str(vm_path))
-                                break
+                        for vmx_file in vmx_files:
+                            for _vmx_file in _vmx_files:
+                                # Compare files
+                                vmx_match = filecmp.cmp(_vmx_file, vmx_file, True)
 
+                                if vmx_match:
+                                    self._print("Virtual Machine '" + self.name + "' have been backed up already!")
+                                    self._print('Backup Path: ' + str(vm_path))
+                                    break
+
+                            else:
+                                continue
+                            break
                         else:
                             continue
                         break
@@ -246,8 +252,7 @@ class VirtualMachine(object):
 
         else:
             vmx_match = True
-            self._print("Virtual Machine '" + self.name + "' does not have '" + self.name + ".vmx' file!"
-                                                                                            " Skipping backup!")
+            self._print("Virtual Machine '" + self.name + "' does not have any '*.vmx' files! Skipping backup!")
 
         return not vmx_match
 
