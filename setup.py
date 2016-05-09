@@ -1,11 +1,6 @@
 # !/usr/bin/env python
 """
-Script for generating package distribution
-
-Used quite a few recipes from here:
-https://wiki.python.org/moin/Distutils/Cookbook
-Some hints on how to extend commands
-http://stackoverflow.com/questions/1321270/how-to-extend-distutils-with-a-simple-post-install-script/1321345#1321345
+VMWare Backup Setup Scripts
 """
 
 
