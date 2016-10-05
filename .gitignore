@@ -1,12 +1,31 @@
-# Generated Folder and Files
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# Pycharm project files
+.idea/
+
+# generated folder and files
 bin/
 gen/
-dist/
-MANIFEST
-build/
-
-# PyCharm Files
-.idea/
 
 # Python generated files
 *.pyc
+*.pyo
+
+# folder and files generated during distribuition generation
+dist/
+MANIFEST
+build/
