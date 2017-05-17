@@ -16,12 +16,6 @@ from py_knife.py_setup import find_packages, non_python_files, package_data_file
 from vmware_backup import __version__
 
 
-### CONSTANTS ###
-## Meta Data ##
-__author__ = 'Kirill V. Belyayev'
-__license__ = 'GPL'
-
-
 ### FUNCTIONS ###
 ## Install Functions ##
 def _pre_install():

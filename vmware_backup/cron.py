@@ -10,10 +10,6 @@ from crontab import CronTab
 
 
 ### CONSTANTS ###
-## Meta Data ##
-__author__ = 'Kirill V. Belyayev'
-__license__ = 'GPL'
-
 ## Cron Constants ##
 # TODO: Rewrite crontab so it works on Windows as well!
 if os.name == 'posix':

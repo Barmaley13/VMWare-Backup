@@ -11,10 +11,6 @@ from py_knife.ordered_dict import OrderedDict
 
 
 ### CONSTANTS ###
-## Meta Data ##
-__author__ = 'Kirill V. Belyayev'
-__license__ = 'GPL'
-
 ## Default Backup Settings ##
 # TODO: Add 'MUTLIPLE_TAPE_SYSTEM' to parser
 DEFAULT_SETTINGS = OrderedDict()

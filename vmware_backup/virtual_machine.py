@@ -16,12 +16,6 @@ from py_knife.decorators import multiple_attempts
 from default_settings import LOG_TS_FORMAT, MUTLIPLE_TAPE_SYSTEM
 
 
-### CONSTANTS ###
-## Meta Data ##
-__author__ = 'Kirill V. Belyayev'
-__license__ = 'GPL'
-
-
 ### FUNCTIONS ###
 def execute_backup(settings):
     """ Backup Machines """

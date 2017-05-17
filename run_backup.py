@@ -22,10 +22,6 @@ from vmware_backup import execute_backup, enable_backup, disable_backup
 
 
 ### CONSTANTS ###
-## Meta Data ##
-__author__ = 'Kirill V. Belyayev'
-__license__ = 'GPL'
-
 ## Module Constants ##
 CWD = sys.path[0]
 BACKUP_COMMAND = 'python ' + os.path.join(CWD, 'run_backup.py') + ' -b'
